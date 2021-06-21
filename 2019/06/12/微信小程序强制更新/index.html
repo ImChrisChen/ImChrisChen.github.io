@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>微信小程序强制更新 | Yo Man!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="微信小程序">
+    <meta name="description" content="启动时更新 热启动：假如用户已经打开过某小程序，然后在一定时间内再次打开该小程序，此时无需重新启动，只需将后台态的小程序切换到前台，这个过程就是热启动； 冷启动：用户首次打开或小程序被微信主动销毁后再次打开的情况，此时小程序需要重新加载启动，即冷启动。 小程序没有重启的概念。   小程序每次冷启动时，都会检查是否有更新版本，如果发现有新版本，将会异步下载新版本的代码包，并同时用客户端本地的包进">
+<meta name="keywords" content="微信小程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序强制更新">
+<meta property="og:url" content="https://ImChrisChen.Github.io/2019/06/12/微信小程序强制更新/index.html">
+<meta property="og:site_name" content="Yo Man!">
+<meta property="og:description" content="启动时更新 热启动：假如用户已经打开过某小程序，然后在一定时间内再次打开该小程序，此时无需重新启动，只需将后台态的小程序切换到前台，这个过程就是热启动； 冷启动：用户首次打开或小程序被微信主动销毁后再次打开的情况，此时小程序需要重新加载启动，即冷启动。 小程序没有重启的概念。   小程序每次冷启动时，都会检查是否有更新版本，如果发现有新版本，将会异步下载新版本的代码包，并同时用客户端本地的包进">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-18T15:53:59.390Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信小程序强制更新">
+<meta name="twitter:description" content="启动时更新 热启动：假如用户已经打开过某小程序，然后在一定时间内再次打开该小程序，此时无需重新启动，只需将后台态的小程序切换到前台，这个过程就是热启动； 冷启动：用户首次打开或小程序被微信主动销毁后再次打开的情况，此时小程序需要重新加载启动，即冷启动。 小程序没有重启的概念。   小程序每次冷启动时，都会检查是否有更新版本，如果发现有新版本，将会异步下载新版本的代码包，并同时用客户端本地的包进">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yo Man!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement('script');
+            hm.src = 'https://hm.baidu.com/hm.js?42406b5925a2b21ae04d47ea125d86ee';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ChrisChen</h5>
+          <a href="mailto:309129685@qq.com" title="309129685@qq.com" class="mail">309129685@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ImChrisChen" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">微信小程序强制更新</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">微信小程序强制更新 😄 </h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-06-12T06:42:10.000Z" itemprop="datePublished" class="page-time">
+  2019-06-12
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#启动时更新"><span class="post-toc-number">1.</span> <span class="post-toc-text">启动时更新</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#微信开发者工具中设置编译模式启动触发"><span class="post-toc-number">2.</span> <span class="post-toc-text">微信开发者工具中设置编译模式启动触发</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#示例代码"><span class="post-toc-number">3.</span> <span class="post-toc-text">示例代码</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-微信小程序强制更新" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">微信小程序强制更新</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-06-12 14:42:10" datetime="2019-06-12T06:42:10.000Z" itemprop="datePublished">2019-06-12</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <!--# 微信小程序强制更新-->
+
+<h3 id="启动时更新"><a href="#启动时更新" class="headerlink" title="启动时更新"></a>启动时更新</h3><ul>
+<li><strong>热启动：</strong>假如用户已经打开过某小程序，然后在一定时间内再次打开该小程序，此时无需重新启动，只需将后台态的小程序切换到前台，这个过程就是热启动；</li>
+<li><strong>冷启动：</strong>用户首次打开或小程序被微信主动销毁后再次打开的情况，此时小程序需要重新加载启动，即冷启动。 小程序没有重启的概念。</li>
+</ul>
+<blockquote>
+<p>小程序每次冷启动时，都会检查是否有更新版本，如果发现有新版本，将会异步下载新版本的代码包，并同时用客户端本地的包进行启动，即新版本的小程序需要等下一次冷启动才会应用上。</p>
+</blockquote>
+<p><code>注意: 发布版本的时候版本号也记得更新，可能导致有更新提示不生效</code></p>
+<h3 id="微信开发者工具中设置编译模式启动触发"><a href="#微信开发者工具中设置编译模式启动触发" class="headerlink" title="微信开发者工具中设置编译模式启动触发"></a>微信开发者工具中设置编译模式启动触发</h3><ul>
+<li><input checked disabled type="checkbox"> 下次编译时模拟更新</li>
+</ul>
+<h3 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 检查是否版本更新，在app.js里的onLaunch中调用即可</span></span><br><span class="line">checkUpdate() &#123;</span><br><span class="line">    <span class="keyword">const</span> updateManager = wx.getUpdateManager();</span><br><span class="line">    updateManager.onCheckForUpdate(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 请求完新版本信息的回调</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"是否有新版本："</span> + res.hasUpdate);</span><br><span class="line">        <span class="keyword">if</span> (res.hasUpdate) &#123;</span><br><span class="line">            <span class="comment">// 小程序有新版本，会主动触发下载操作（无需开发者触发）</span></span><br><span class="line">            updateManager.onUpdateReady(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                wx.showModal(&#123;</span><br><span class="line">                    title: <span class="string">'更新提示'</span>,</span><br><span class="line">                    content: <span class="string">'新版本已经准备好，是否重启应用？'</span>,</span><br><span class="line">                    success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">                        <span class="keyword">if</span> (res.confirm) &#123;</span><br><span class="line">                            <span class="comment">// 新的版本已经下载好，调用 applyUpdate 应用新版本并重启</span></span><br><span class="line">                            wx.getUpdateManager().applyUpdate()</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 小程序有新版本，会主动触发下载操作（无需开发者触发）</span></span><br><span class="line">            updateManager.onUpdateFailed(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="comment">// 新版本下载失败</span></span><br><span class="line">                wx.showModal(&#123;</span><br><span class="line">                    title: <span class="string">'提示'</span>,</span><br><span class="line">                    content: <span class="string">'检查到有新版本，但下载失败，请检查网络设置'</span>,</span><br><span class="line">                    showCancel: <span class="literal">false</span>,</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2021-05-18T15:53:59.390Z" itemprop="dateUpdated">2021-05-18 23:53:59</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://ImChrisChen.Github.io">
+            <img src="/img/avatar.jpg" alt="ChrisChen">
+            ChrisChen
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微信小程序/">微信小程序</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+    <nav class="post-nav flex-row flex-justify-between">
+        
+        <div class="waves-block waves-effect prev">
+            <a href="/2019/06/12/Mac个性化操作/" id="post-prev" class="post-nav-link">
+                <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+                <h4 class="title">Mac个性化操作</h4>
+            </a>
+        </div>
+        
+
+        
+        <div class="waves-block waves-effect next">
+            <a href="/2019/06/12/Git常用命令/" id="post-next" class="post-nav-link">
+                <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+                <h4 class="title">Git常用命令</h4>
+            </a>
+        </div>
+        
+    </nav>
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ChrisChen &copy; 2018 - 2021</span>
+            <span>
+                
+                <a href="//beian.miit.gov.cn/" target="_blank">粤ICP备18132161号-1</a><br>
+                
+<!--                Power by <a href="//hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>-->
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

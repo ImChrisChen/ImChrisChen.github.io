@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>如何进行Web程序性能优化🛁 | Yo Man!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="html,css,Javascript">
+    <meta name="description" content="浏览器html 减少DOM数量  不要在HTML中拉伸图片 （会重新绘制）   css 避免重复定义CSS，CSS覆盖等 不使用CSS表达式  javascript 减少DOM访问（避免重绘 和 回流） 合理设计事件监听器 避免 DOM 阻塞 （JavaScript放在最后面，或者加上defer 标签）  资源 静态资源压缩，使用CDN  缓存 客户端缓存 服务端缓存 http 缓存  网络Htt">
+<meta name="keywords" content="html,css,Javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何进行Web程序性能优化🛁">
+<meta property="og:url" content="https://ImChrisChen.Github.io/2019/08/17/如何进行Web程序性能优化🛁/index.html">
+<meta property="og:site_name" content="Yo Man!">
+<meta property="og:description" content="浏览器html 减少DOM数量  不要在HTML中拉伸图片 （会重新绘制）   css 避免重复定义CSS，CSS覆盖等 不使用CSS表达式  javascript 减少DOM访问（避免重绘 和 回流） 合理设计事件监听器 避免 DOM 阻塞 （JavaScript放在最后面，或者加上defer 标签）  资源 静态资源压缩，使用CDN  缓存 客户端缓存 服务端缓存 http 缓存  网络Htt">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-06-12T06:59:21.097Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何进行Web程序性能优化🛁">
+<meta name="twitter:description" content="浏览器html 减少DOM数量  不要在HTML中拉伸图片 （会重新绘制）   css 避免重复定义CSS，CSS覆盖等 不使用CSS表达式  javascript 减少DOM访问（避免重绘 和 回流） 合理设计事件监听器 避免 DOM 阻塞 （JavaScript放在最后面，或者加上defer 标签）  资源 静态资源压缩，使用CDN  缓存 客户端缓存 服务端缓存 http 缓存  网络Htt">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yo Man!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement('script');
+            hm.src = 'https://hm.baidu.com/hm.js?42406b5925a2b21ae04d47ea125d86ee';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ChrisChen</h5>
+          <a href="mailto:309129685@qq.com" title="309129685@qq.com" class="mail">309129685@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ImChrisChen" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">如何进行Web程序性能优化🛁</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">如何进行Web程序性能优化🛁 😄 </h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-08-17T05:27:10.000Z" itemprop="datePublished" class="page-time">
+  2019-08-17
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/性能优化/">性能优化</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#浏览器"><span class="post-toc-number">1.</span> <span class="post-toc-text">浏览器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#html"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">html</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#css"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">css</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#javascript"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">javascript</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#资源"><span class="post-toc-number">2.</span> <span class="post-toc-text">资源</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#缓存"><span class="post-toc-number">3.</span> <span class="post-toc-text">缓存</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#网络Http"><span class="post-toc-number">4.</span> <span class="post-toc-text">网络Http</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#服务器"><span class="post-toc-number">5.</span> <span class="post-toc-text">服务器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#content方面"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">content方面</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Server方面"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">Server方面</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-如何进行Web程序性能优化🛁" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">如何进行Web程序性能优化🛁</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-08-17 13:27:10" datetime="2019-08-17T05:27:10.000Z" itemprop="datePublished">2019-08-17</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/性能优化/">性能优化</a></li></ul>
+
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h2><h3 id="html"><a href="#html" class="headerlink" title="html"></a>html</h3><ul>
+<li><p>减少DOM数量</p>
+</li>
+<li><p>不要在HTML中拉伸图片 （会重新绘制）</p>
+</li>
+</ul>
+<h3 id="css"><a href="#css" class="headerlink" title="css"></a>css</h3><ul>
+<li>避免重复定义CSS，CSS覆盖等</li>
+<li>不使用CSS表达式</li>
+</ul>
+<h3 id="javascript"><a href="#javascript" class="headerlink" title="javascript"></a>javascript</h3><ul>
+<li>减少DOM访问（避免重绘 和 回流）</li>
+<li>合理设计事件监听器</li>
+<li>避免 DOM 阻塞 （JavaScript放在最后面，或者加上defer 标签）</li>
+</ul>
+<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><ul>
+<li>静态资源压缩，使用CDN</li>
+</ul>
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><ul>
+<li>客户端缓存</li>
+<li>服务端缓存</li>
+<li>http 缓存</li>
+</ul>
+<h2 id="网络Http"><a href="#网络Http" class="headerlink" title="网络Http"></a>网络Http</h2><ul>
+<li>减少 HTTP 请求数量（合并文件、CSS精灵 (图片合成)、inline Image）</li>
+<li>减少 HTTP 请求大小</li>
+<li>添加Expires或者Cache-Control响应头</li>
+</ul>
+<h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><ul>
+<li>nginx 开启 gzip 压缩</li>
+<li>减小cookie大小</li>
+<li>引入资源的域名不要包含cookie</li>
+<li></li>
+</ul>
+<h3 id="content方面"><a href="#content方面" class="headerlink" title="content方面"></a>content方面</h3><ul>
+<li>减少HTTP请求：合并文件、CSS精灵 (图片合成)、inline Image</li>
+<li>减少DNS查询：DNS查询完成之前浏览器不能从这个主机下载任何任何文件。方法：DNS缓存、将资源分布到恰当数量的主机名，平衡并行下载和DNS查询</li>
+<li>避免重定向：多余的中间访问</li>
+<li>使Ajax可缓存</li>
+<li>非必须组件延迟加载 ( 插件，组件，图片等懒加载同理 )</li>
+<li>未来所需组件预加载</li>
+<li>减少DOM元素数量</li>
+<li>将资源放到不同的域下：浏览器同时从一个域下载资源的数目有限，增加域可以提高并行下载量</li>
+<li>减少iframe数量</li>
+<li>避免404</li>
+</ul>
+<h3 id="Server方面"><a href="#Server方面" class="headerlink" title="Server方面"></a>Server方面</h3><ul>
+<li>使用CDN</li>
+<li></li>
+<li>配置ETag</li>
+<li>Flush Buffer Early</li>
+<li>Ajax使用GET进行请求</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2021-06-12T06:59:21.097Z" itemprop="dateUpdated">2021-06-12 14:59:21</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://ImChrisChen.Github.io">
+            <img src="/img/avatar.jpg" alt="ChrisChen">
+            ChrisChen
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Javascript/">Javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/html/">html</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+    <nav class="post-nav flex-row flex-justify-between">
+        
+        <div class="waves-block waves-effect prev">
+            <a href="/2019/11/28/Contenteditable-可编辑div设置placeholder属性/" id="post-prev" class="post-nav-link">
+                <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+                <h4 class="title">Contenteditable 设置placeholder属性</h4>
+            </a>
+        </div>
+        
+
+        
+        <div class="waves-block waves-effect next">
+            <a href="/2019/08/17/http Response报文结构☎️/" id="post-next" class="post-nav-link">
+                <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+                <h4 class="title">Http Request、Response报文结构☎️</h4>
+            </a>
+        </div>
+        
+    </nav>
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ChrisChen &copy; 2018 - 2021</span>
+            <span>
+                
+                <a href="//beian.miit.gov.cn/" target="_blank">粤ICP备18132161号-1</a><br>
+                
+<!--                Power by <a href="//hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>-->
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

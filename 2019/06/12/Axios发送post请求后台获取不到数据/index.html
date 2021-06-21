@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Axios发送post请求后台获取不到数据🥲 | Yo Man!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Axios,Http,Javascript">
+    <meta name="description" content="原因： 前端传入的数据格式和后台接口接收数据类型不一致 1. URLSearchParams (不推荐)   URLSearchParams 对URL上的字符串数据进行类型处理  此方法不兼容IE 和 edge 浏览器 链接 代码展示 let paramsObj = new URLSearchParams();paramsObj.append(&apos;openid&apos;, &apos;oSrdV47XurWKLd">
+<meta name="keywords" content="Axios,Http,Javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Axios发送post请求后台获取不到数据🥲">
+<meta property="og:url" content="https://ImChrisChen.Github.io/2019/06/12/Axios发送post请求后台获取不到数据/index.html">
+<meta property="og:site_name" content="Yo Man!">
+<meta property="og:description" content="原因： 前端传入的数据格式和后台接口接收数据类型不一致 1. URLSearchParams (不推荐)   URLSearchParams 对URL上的字符串数据进行类型处理  此方法不兼容IE 和 edge 浏览器 链接 代码展示 let paramsObj = new URLSearchParams();paramsObj.append(&apos;openid&apos;, &apos;oSrdV47XurWKLd">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-22T20:39:28.986Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Axios发送post请求后台获取不到数据🥲">
+<meta name="twitter:description" content="原因： 前端传入的数据格式和后台接口接收数据类型不一致 1. URLSearchParams (不推荐)   URLSearchParams 对URL上的字符串数据进行类型处理  此方法不兼容IE 和 edge 浏览器 链接 代码展示 let paramsObj = new URLSearchParams();paramsObj.append(&apos;openid&apos;, &apos;oSrdV47XurWKLd">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yo Man!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement('script');
+            hm.src = 'https://hm.baidu.com/hm.js?42406b5925a2b21ae04d47ea125d86ee';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ChrisChen</h5>
+          <a href="mailto:309129685@qq.com" title="309129685@qq.com" class="mail">309129685@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ImChrisChen" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Axios发送post请求后台获取不到数据🥲</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Axios发送post请求后台获取不到数据🥲 😄 </h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-06-12T07:16:48.000Z" itemprop="datePublished" class="page-time">
+  2019-06-12
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/解决问题相关/">解决问题相关</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-URLSearchParams-不推荐"><span class="post-toc-number">1.</span> <span class="post-toc-text">1. URLSearchParams (不推荐)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-qs模块-stringify方法"><span class="post-toc-number">2.</span> <span class="post-toc-text">2. qs模块 stringify方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-和后台协商改变接收参数方式"><span class="post-toc-number">3.</span> <span class="post-toc-text">3. 和后台协商改变接收参数方式</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Axios发送post请求后台获取不到数据" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Axios发送post请求后台获取不到数据🥲</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-06-12 15:16:48" datetime="2019-06-12T07:16:48.000Z" itemprop="datePublished">2019-06-12</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/解决问题相关/">解决问题相关</a></li></ul>
+
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <!--# Axios post请求后台拿不到数据-->
+
+<p><code>原因： 前端传入的数据格式和后台接口接收数据类型不一致</code></p>
+<h3 id="1-URLSearchParams-不推荐"><a href="#1-URLSearchParams-不推荐" class="headerlink" title="1. URLSearchParams (不推荐)"></a>1. URLSearchParams (不推荐)</h3><blockquote>
+<p>  URLSearchParams 对URL上的字符串数据进行类型处理</p>
+</blockquote>
+<p>此方法不兼容IE 和 edge 浏览器 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7" target="_blank" rel="noopener">链接</a></p>
+<p><strong>代码展示</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> paramsObj = <span class="keyword">new</span> URLSearchParams();</span><br><span class="line">paramsObj.append(<span class="string">'openid'</span>, <span class="string">'oSrdV47XurWKLdhjheQ_9U1UKrWQ'</span>);   <span class="comment">// key,value</span></span><br><span class="line">axios(&#123;</span><br><span class="line">    method: <span class="string">'post'</span>,</span><br><span class="line">    url: <span class="string">'/api_prod/booklist/get_topic_list'</span>,</span><br><span class="line">    data: paramsObj</span><br><span class="line">&#125;).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// Coding</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-qs模块-stringify方法"><a href="#2-qs模块-stringify方法" class="headerlink" title="2. qs模块 stringify方法"></a>2. qs模块 stringify方法</h3><blockquote>
+<p>  字符串解析和序列化字符串的库</p>
+</blockquote>
+<p><strong>安装</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install qs --save</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例代码</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'axios'</span></span><br><span class="line"><span class="keyword">import</span> qs <span class="keyword">from</span> <span class="string">'qs'</span></span><br><span class="line"></span><br><span class="line">created() &#123;</span><br><span class="line">    axios(&#123;</span><br><span class="line">        method: <span class="string">'post'</span>,</span><br><span class="line">        url: <span class="string">'/api_prod/booklist/get_topic_list'</span>,</span><br><span class="line">        data: qs.stringify(&#123;</span><br><span class="line">        	key: <span class="string">'value'</span></span><br><span class="line">        &#125;),</span><br><span class="line">    &#125;).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// Coding</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-和后台协商改变接收参数方式"><a href="#3-和后台协商改变接收参数方式" class="headerlink" title="3. 和后台协商改变接收参数方式"></a>3. 和后台协商改变接收参数方式</h3><pre><code>上面这些情况一般都是由于前后端数据类型交互格式不一致所导致的</code></pre><p>例如后端使用的是 <code>application/x-www-form-urlencoded</code>格式<br>数据格式为：<code>id=1&amp;name=chris</code></p>
+<p>前端发送的数据是 <code>application/json</code> 格式<br>数据格式为：<code>{id:1,name:&#39;chris&#39;}</code></p>
+<p>就会纯在上面所说的情况,需要用一些方法去处理和转译</p>
+<p><strong>然儿最好的办法还是直接从文档上就统一好这些规范，避免在开发时出现不必要的联调，导致降低效率</strong></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2021-05-22T20:39:28.986Z" itemprop="dateUpdated">2021-05-23 04:39:28</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://ImChrisChen.Github.io">
+            <img src="/img/avatar.jpg" alt="ChrisChen">
+            ChrisChen
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Axios/">Axios</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Http/">Http</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Javascript/">Javascript</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+    <nav class="post-nav flex-row flex-justify-between">
+        
+        <div class="waves-block waves-effect prev">
+            <a href="/2019/06/12/Vue-cli-3-x-tsconfig-js配置说明/" id="post-prev" class="post-nav-link">
+                <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+                <h4 class="title">Vue-cli-3.x tsconfig.js配置说明</h4>
+            </a>
+        </div>
+        
+
+        
+        <div class="waves-block waves-effect next">
+            <a href="/2019/06/12/webstorm中识别vue-cli-3-x的别名/" id="post-next" class="post-nav-link">
+                <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+                <h4 class="title">webstorm中识别vue-cli-3.x的别名</h4>
+            </a>
+        </div>
+        
+    </nav>
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ChrisChen &copy; 2018 - 2021</span>
+            <span>
+                
+                <a href="//beian.miit.gov.cn/" target="_blank">粤ICP备18132161号-1</a><br>
+                
+<!--                Power by <a href="//hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>-->
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

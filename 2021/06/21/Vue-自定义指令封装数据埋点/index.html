@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Vue 自定义指令封装数据埋点🐛 | Yo Man!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Vue,代码片段">
+    <meta name="description" content="最小化实现最小化实现 ，inserted, 和bind的区别可以取官网看，不同的使用场景 Vue.directive(&apos;collect&apos;, &amp;#123;	inserted (el,bindbing) &amp;#123;        // 执行自定义指令要做的操作    &amp;#125;&amp;#125;);   collect 表示自定义指令的名称   bindbing.name close_vip 这部分表示">
+<meta name="keywords" content="Vue,代码片段">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue 自定义指令封装数据埋点🐛">
+<meta property="og:url" content="https://ImChrisChen.Github.io/2021/06/21/Vue-自定义指令封装数据埋点/index.html">
+<meta property="og:site_name" content="Yo Man!">
+<meta property="og:description" content="最小化实现最小化实现 ，inserted, 和bind的区别可以取官网看，不同的使用场景 Vue.directive(&apos;collect&apos;, &amp;#123;	inserted (el,bindbing) &amp;#123;        // 执行自定义指令要做的操作    &amp;#125;&amp;#125;);   collect 表示自定义指令的名称   bindbing.name close_vip 这部分表示">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-06-21T08:54:15.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue 自定义指令封装数据埋点🐛">
+<meta name="twitter:description" content="最小化实现最小化实现 ，inserted, 和bind的区别可以取官网看，不同的使用场景 Vue.directive(&apos;collect&apos;, &amp;#123;	inserted (el,bindbing) &amp;#123;        // 执行自定义指令要做的操作    &amp;#125;&amp;#125;);   collect 表示自定义指令的名称   bindbing.name close_vip 这部分表示">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yo Man!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement('script');
+            hm.src = 'https://hm.baidu.com/hm.js?42406b5925a2b21ae04d47ea125d86ee';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ChrisChen</h5>
+          <a href="mailto:309129685@qq.com" title="309129685@qq.com" class="mail">309129685@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ImChrisChen" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Vue 自定义指令封装数据埋点🐛</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Vue 自定义指令封装数据埋点🐛 😄 </h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-06-21T07:57:39.000Z" itemprop="datePublished" class="page-time">
+  2021-06-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最小化实现"><span class="post-toc-number">1.</span> <span class="post-toc-text">最小化实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Vue自定义指令设计"><span class="post-toc-number">2.</span> <span class="post-toc-text">Vue自定义指令设计</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#自定义指令编写"><span class="post-toc-number">3.</span> <span class="post-toc-text">自定义指令编写</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用Vue-use安装"><span class="post-toc-number">4.</span> <span class="post-toc-text">使用Vue.use安装</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#使用"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">使用</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Vue-自定义指令封装数据埋点" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Vue 自定义指令封装数据埋点🐛</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-06-21 15:57:39" datetime="2021-06-21T07:57:39.000Z" itemprop="datePublished">2021-06-21</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="最小化实现"><a href="#最小化实现" class="headerlink" title="最小化实现"></a>最小化实现</h2><p>最小化实现 ，<code>inserted, 和bind的区别可以取官网看，不同的使用场景</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">Vue.directive(<span class="string">'collect'</span>, &#123;</span><br><span class="line">	inserted (el,bindbing) &#123;</span><br><span class="line">        <span class="comment">// 执行自定义指令要做的操作</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>collect</code> 表示自定义指令的名称   <code>bindbing.name</code></li>
+<li><code>close_vip</code> 这部分表示自定义指令的参数  <code>bindbing.arg</code></li>
+<li><code>.click .stop</code> 表示修饰符  <code>binding.modifiers.click, binding.modifiers.stop</code></li>
+<li><code>{title: &quot;关闭弹窗&quot;}</code> 这部分表示 自定义指令的值.  <code>binding.value</code></li>
+</ul>
+<h2 id="Vue自定义指令设计"><a href="#Vue自定义指令设计" class="headerlink" title="Vue自定义指令设计"></a>Vue自定义指令设计</h2><p>Vue自定义指令其实就是html 的属性，通过给 Vue自定义指令也是 html属性的一种语法糖，所以自定义其实就是通过 html 标签属性的形式，通过一系列规则的封装成的一些特定功能，下面看看如何实现</p>
+<p><strong>实现自定义指令需要弄明白一下几个问题</strong>。</p>
+<ol>
+<li>自定义指令使用的使用的多种方法，name，修饰符等等</li>
+<li>自定义指令插件化开发，如何解耦合？</li>
+</ol>
+<h2 id="自定义指令编写"><a href="#自定义指令编写" class="headerlink" title="自定义指令编写"></a>自定义指令编写</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; dw &#125; <span class="keyword">from</span> <span class="string">'@/utils'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">Collect</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    inserted(el, binding) &#123;</span><br><span class="line">        <span class="keyword">let</span> &#123; value, arg, modifiers &#125; = binding;</span><br><span class="line">        <span class="keyword">let</span> &#123; click, show, prevent, stop &#125; = modifiers;     <span class="comment">// 自定义修饰符</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (show) &#123;</span><br><span class="line">            dw.onEvent(arg, value);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (click) &#123;</span><br><span class="line">            el.addEventListener(<span class="string">'click'</span>, event =&gt; &#123;</span><br><span class="line">                stop &amp;&amp; event.stopPropagation();</span><br><span class="line">                prevent &amp;&amp; event.preventDefault();</span><br><span class="line">                dw.onEvent(arg, value);</span><br><span class="line">            &#125;, <span class="literal">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    bind() &#123;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    unbind(el, bingding) &#123;</span><br><span class="line">        <span class="keyword">const</span> &#123; click = <span class="literal">false</span> &#125; = bingding.modifiers;</span><br><span class="line">        <span class="keyword">const</span> &#123; value &#125; = bingding;</span><br><span class="line">        <span class="keyword">if</span> (click) &#123;</span><br><span class="line">            el.removeEventListener(<span class="string">'click'</span>,() =&gt; &#123;</span><br><span class="line">				COLLECT(value);</span><br><span class="line">            &#125;,<span class="literal">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 导出的模块一定要有一个静态的 install的方法， Vue.use(module) 会执行到</span></span><br><span class="line">    <span class="keyword">static</span> install(Vue) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'执行安装'</span>);</span><br><span class="line">        Vue.directive(<span class="string">'vascollect'</span>, <span class="keyword">new</span> Collect()); 		<span class="comment">// 这里也可以写成对象的形式</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用Vue-use安装"><a href="#使用Vue-use安装" class="headerlink" title="使用Vue.use安装"></a>使用Vue.use安装</h2><p>使用Vue.use的形式使用，使其Vue项目更加规范化</p>
+<p><code>main.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> Collect <span class="keyword">from</span> <span class="string">'@/directives/collect'</span>;	<span class="comment">// 自定义指令</span></span><br><span class="line">Vue.use(Collect) 		<span class="comment">// 注册自定义指令</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>通过collect点击时上报 数据埋点事件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;button v-collect:close_vip.click.stop=&quot;&#123; title: &quot;关闭弹窗&quot;&#125; &quot;&gt;Submit&lt;/button&gt;</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2021-06-21T08:54:15.821Z" itemprop="dateUpdated">2021-06-21 16:54:15</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://ImChrisChen.Github.io">
+            <img src="/img/avatar.jpg" alt="ChrisChen">
+            ChrisChen
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue/">Vue</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/代码片段/">代码片段</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+    <nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+        
+
+        
+        <div class="waves-block waves-effect next">
+            <a href="/2021/05/29/cookie和session/" id="post-next" class="post-nav-link">
+                <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+                <h4 class="title">cookie和session</h4>
+            </a>
+        </div>
+        
+    </nav>
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ChrisChen &copy; 2018 - 2021</span>
+            <span>
+                
+                <a href="//beian.miit.gov.cn/" target="_blank">粤ICP备18132161号-1</a><br>
+                
+<!--                Power by <a href="//hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>-->
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

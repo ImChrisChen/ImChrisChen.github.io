@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>JavaScript实现一个链表😼 - 数据结构 | Yo Man!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Javascript,数据结构">
+    <meta name="description" content="背景最近在找工作，然后看到boss直聘的论坛上，一个前端招聘者在抱怨招不到合适的人，面了一大堆人，工作2-3年的，用JavaScript实现一个链表都寥寥无几，都没有聊下去的欲望…. 所以在这了准备在写这篇博客，表明我实现过哈哈哈😂，抖个机灵，毕竟自己之前也是面试官，喜欢出一些开放型的题目去考察面试者，其实我看来这位面试官考察的这个问题，除了考察这个问题本身，更多的是看你的分析问题的能力，和抽象">
+<meta name="keywords" content="Javascript,数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript实现一个链表😼 - 数据结构">
+<meta property="og:url" content="https://ImChrisChen.Github.io/2021/05/20/JavaScript实现一个链表-数据结构/index.html">
+<meta property="og:site_name" content="Yo Man!">
+<meta property="og:description" content="背景最近在找工作，然后看到boss直聘的论坛上，一个前端招聘者在抱怨招不到合适的人，面了一大堆人，工作2-3年的，用JavaScript实现一个链表都寥寥无几，都没有聊下去的欲望…. 所以在这了准备在写这篇博客，表明我实现过哈哈哈😂，抖个机灵，毕竟自己之前也是面试官，喜欢出一些开放型的题目去考察面试者，其实我看来这位面试官考察的这个问题，除了考察这个问题本身，更多的是看你的分析问题的能力，和抽象">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://cdn.chrischen.top/blog/re6YO8.png">
+<meta property="og:updated_time" content="2021-05-22T20:39:28.988Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript实现一个链表😼 - 数据结构">
+<meta name="twitter:description" content="背景最近在找工作，然后看到boss直聘的论坛上，一个前端招聘者在抱怨招不到合适的人，面了一大堆人，工作2-3年的，用JavaScript实现一个链表都寥寥无几，都没有聊下去的欲望…. 所以在这了准备在写这篇博客，表明我实现过哈哈哈😂，抖个机灵，毕竟自己之前也是面试官，喜欢出一些开放型的题目去考察面试者，其实我看来这位面试官考察的这个问题，除了考察这个问题本身，更多的是看你的分析问题的能力，和抽象">
+<meta name="twitter:image" content="http://cdn.chrischen.top/blog/re6YO8.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yo Man!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement('script');
+            hm.src = 'https://hm.baidu.com/hm.js?42406b5925a2b21ae04d47ea125d86ee';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ChrisChen</h5>
+          <a href="mailto:309129685@qq.com" title="309129685@qq.com" class="mail">309129685@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ImChrisChen" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">JavaScript实现一个链表😼 - 数据结构</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">JavaScript实现一个链表😼 - 数据结构 😄 </h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-05-20T06:10:45.000Z" itemprop="datePublished" class="page-time">
+  2021-05-20
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据结构/">数据结构</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#链表是什么？"><span class="post-toc-number">2.</span> <span class="post-toc-text">链表是什么？</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JavaScript如何实现链表？"><span class="post-toc-number">3.</span> <span class="post-toc-text">JavaScript如何实现链表？</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Node辅助类实现"><span class="post-toc-number">4.</span> <span class="post-toc-text">Node辅助类实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#链表类的实现"><span class="post-toc-number">5.</span> <span class="post-toc-text">链表类的实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#append"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">append</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#insert"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">insert</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#removeAt"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">removeAt</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#indexOf"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">indexOf</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#getHead"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">getHead</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代码优化-amp-amp-完成例子"><span class="post-toc-number">6.</span> <span class="post-toc-text">代码优化 &amp;&amp; 完成例子</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最后"><span class="post-toc-number">7.</span> <span class="post-toc-text">最后</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-JavaScript实现一个链表-数据结构" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">JavaScript实现一个链表😼 - 数据结构</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-05-20 14:10:45" datetime="2021-05-20T06:10:45.000Z" itemprop="datePublished">2021-05-20</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据结构/">数据结构</a></li></ul>
+
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近在找工作，然后看到boss直聘的论坛上，一个前端招聘者在抱怨招不到合适的人，面了一大堆人，工作2-3年的，用JavaScript实现一个链表都寥寥无几，都没有聊下去的欲望….</p>
+<p>所以在这了准备在写这篇博客，表明我实现过哈哈哈😂，抖个机灵，毕竟自己之前也是面试官，喜欢出一些开放型的题目去考察面试者，其实我看来这位面试官考察的这个问题，除了考察这个问题本身，更多的是看你的<strong>分析问题的能力，和抽象思维</strong></p>
+<p>下面就来分析下如何用JavaScript实现一个链表</p>
+<hr>
+<h2 id="链表是什么？"><a href="#链表是什么？" class="headerlink" title="链表是什么？"></a>链表是什么？</h2><p>线性表的链式存储表示的特点是用一组任意的存储单元<strong>存储线性表</strong>的数据元素（这组存储单元可以是连续的，也可以是不连续的）。因此，为了表示每个数据元素与其直接后继数据元素 之间的逻辑关系</p>
+<p>上面是百度百科的解释，我画了一张图让大家更便于理解</p>
+<p>如果用生活中的例子代替火车就是最抽象的例子</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://cdn.chrischen.top/blog/re6YO8.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>每一个节点包含自己外，还包含一个指针，这个指针可以指向到下一个节点，形成一种，以此类推，形成的一个链式结构，就叫链表</p>
+<p>链表还分为</p>
+<ul>
+<li><p>单向链表</p>
+<p>每个节点包含一个指针，指向下一个节点</p>
+</li>
+<li><p>双向链表</p>
+<p>每一个节点有两个指针，一个指向上一个节点，一个指向到下一个节点</p>
+</li>
+<li><p>循环链表</p>
+<p>把单向链表的最后一个指针从Null改成指向链表头，就形成了循环链表</p>
+</li>
+</ul>
+<p>知道链表是什么后，下面来分析一下如何用JavaScript实现一个单链表</p>
+<h2 id="JavaScript如何实现链表？"><a href="#JavaScript如何实现链表？" class="headerlink" title="JavaScript如何实现链表？"></a>JavaScript如何实现链表？</h2><p>首先，链表是基于一个个节点来组装实现的，首先我们需要创建一个辅助类来实现</p>
+<p>其次，由于JavaScript没有指针的概念，我们在实现节点的时候需要用对象的属性去模拟指针</p>
+<p>然后，我们要知道链表都有哪些API，如何去操作链表，然后再去逐步的实现这些方法</p>
+<p>最后整理出来需要哪些功能</p>
+<ol>
+<li>实现辅助类 Node，模拟链表中的节点<ol>
+<li>节点属性的：本书节点</li>
+<li>节点的属性：next指向</li>
+</ol>
+</li>
+<li>链表类的API<ol>
+<li>getHeader 获取链表头</li>
+<li>append 向链表中追加元素</li>
+<li>insert 向链表中的某一个位置插入元素</li>
+<li>removeAt 删除链表中的某一个元素</li>
+<li>indexOf 查询链表中是否有这个元素</li>
+</ol>
+</li>
+</ol>
+<p>捋清楚这个整体思路后，下面按照这个大纲来实现</p>
+<h2 id="Node辅助类实现"><a href="#Node辅助类实现" class="headerlink" title="Node辅助类实现"></a>Node辅助类实现</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(item) &#123;</span><br><span class="line">        <span class="keyword">this</span>.item = item;		<span class="comment">// 节点内容</span></span><br><span class="line">        <span class="keyword">this</span>.next = <span class="literal">null</span>;		<span class="comment">// 指向下一个节点的指针</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="链表类的实现"><a href="#链表类的实现" class="headerlink" title="链表类的实现"></a>链表类的实现</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedList</span> </span>&#123;</span><br><span class="line">    head = <span class="literal">null</span>;</span><br><span class="line">    length = <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="append"><a href="#append" class="headerlink" title="append"></a>append</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListedList</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    head = <span class="literal">null</span>;			<span class="comment">// 链表头</span></span><br><span class="line">    length = <span class="number">0</span>				<span class="comment">// 链表长度</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 追加节点</span></span><br><span class="line"><span class="comment">     * @param item &#123; Node &#125; 节点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    append(item) &#123;</span><br><span class="line">        <span class="keyword">let</span> node = <span class="keyword">new</span> Node(item);      <span class="comment">// 创建一个节点</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.head) &#123;</span><br><span class="line">            <span class="comment">// 有head头则遍历到获取到最后一个节点，把next指向新追加的节点</span></span><br><span class="line">            <span class="keyword">let</span> current = <span class="keyword">this</span>.head;</span><br><span class="line">            <span class="keyword">while</span> (current.next) &#123;</span><br><span class="line">                current = current.next;</span><br><span class="line">            &#125;</span><br><span class="line">            current.next = node;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 无head头，则直接把head头替换为新的节点</span></span><br><span class="line">            <span class="keyword">this</span>.head = node;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 追加成功后，链表的长度加一</span></span><br><span class="line">        <span class="keyword">this</span>.length++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedList</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 向链表中的某一个位置插入元素</span></span><br><span class="line"><span class="comment">     * @param position &#123; Number &#125;</span></span><br><span class="line"><span class="comment">     * @param item &#123; Node &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    insert(position, item) &#123;</span><br><span class="line">        <span class="comment">// 边界判断 , 防止 position 越界</span></span><br><span class="line">        <span class="keyword">if</span> (position &gt; <span class="number">-1</span> &amp;&amp; position &lt; <span class="keyword">this</span>.length) &#123;</span><br><span class="line">            <span class="keyword">let</span> node = <span class="keyword">new</span> Node(item);      <span class="comment">// 创建一个节点</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 插入的位置是head头前面</span></span><br><span class="line">            <span class="keyword">if</span> (position === <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">let</span> current = <span class="keyword">this</span>.head;</span><br><span class="line">                <span class="keyword">this</span>.head = node;           <span class="comment">// 把head替换为新节点</span></span><br><span class="line">                node.next = current;        <span class="comment">// 把新节点的next指向原来的head节点</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 * 其他位置，则需要遍历链表获取到对应到插入的位置</span></span><br><span class="line"><span class="comment">                 * 思路: 1. 通过positon获取到上一个节点和下一个节点</span></span><br><span class="line"><span class="comment">                 *       2. 把上一个节点的next指向到新节点</span></span><br><span class="line"><span class="comment">                 *       3. 把新节点的next指向到下一个节点</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">let</span> previous = <span class="literal">null</span>;</span><br><span class="line">                <span class="keyword">let</span> current = <span class="keyword">this</span>.head;</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">while</span> (index &lt; position) &#123;</span><br><span class="line">                    previous = current;</span><br><span class="line">                    current = current.next;</span><br><span class="line">                    index++;</span><br><span class="line">                &#125;</span><br><span class="line">                previous.next = node;</span><br><span class="line">                node.next = current;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">this</span>.length++;              <span class="comment">// 插入成功后，链表的长度加1</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.warn(<span class="string">'position的值越界了'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="removeAt"><a href="#removeAt" class="headerlink" title="removeAt"></a>removeAt</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过位置删除节点</span></span><br><span class="line"><span class="comment"> * @param position</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedList</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    removeAt(position) &#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 思路:</span></span><br><span class="line"><span class="comment">         * 1. 通过position 遍历链表和 找到上一个元素和当前元素</span></span><br><span class="line"><span class="comment">         * 2. 把上一个元素的next指向到当前元素的next (也就是当前元素的下一个元素)</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="comment">// postion越界判断,保证传入的位置是正确的</span></span><br><span class="line">        <span class="keyword">if</span> (position &gt; <span class="number">-1</span> &amp;&amp; position &lt; <span class="keyword">this</span>.length) &#123;</span><br><span class="line">            <span class="keyword">if</span> (position === <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">let</span> current = <span class="keyword">this</span>.head;</span><br><span class="line">                <span class="keyword">this</span>.head = current.next;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                let &#123; current, previous &#125; = this.#getPrevAndCurrentNode(position);</span><br><span class="line">                previous.next = current.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.warn(<span class="string">'position的值越界了'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.length--;      <span class="comment">// remove掉后，链表长度减1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="indexOf"><a href="#indexOf" class="headerlink" title="indexOf"></a>indexOf</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过节点找到 position</span></span><br><span class="line"><span class="comment"> * @param item &#123; Node &#125;</span></span><br><span class="line"><span class="comment"> * @return &#123; number &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedList</span> </span>&#123;</span><br><span class="line">    indexOf(item) &#123;</span><br><span class="line">        <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">let</span> current = <span class="keyword">this</span>.head;</span><br><span class="line">        <span class="keyword">while</span> (current.next) &#123;</span><br><span class="line">            current = current.next;</span><br><span class="line">            <span class="keyword">if</span> (current === item) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                index++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> index</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="getHead"><a href="#getHead" class="headerlink" title="getHead"></a>getHead</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedList</span> </span>&#123;</span><br><span class="line">    getHead() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="代码优化-amp-amp-完成例子"><a href="#代码优化-amp-amp-完成例子" class="headerlink" title="代码优化 &amp;&amp; 完成例子"></a>代码优化 &amp;&amp; 完成例子</h2><p>从上面我们观察到，insert，和removeAt这两个方法都用到了position 去获取上一个元素和当前元素，那么我们可以把这方法抽离出来进行一个代码结构的优化，下面给大家展示一下完整的例子</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by WebStorm.</span></span><br><span class="line"><span class="comment"> * User: chrischen</span></span><br><span class="line"><span class="comment"> * Date: 2021/3/18</span></span><br><span class="line"><span class="comment"> * Time: 11:50 下午</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 节点类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * @param item &#123; Node &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">constructor</span>(item) &#123;</span><br><span class="line">        <span class="keyword">this</span>.item = item;</span><br><span class="line">        <span class="keyword">this</span>.next = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 链表类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">LinkedList</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    head = <span class="literal">null</span>;</span><br><span class="line">    length = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 追加节点</span></span><br><span class="line"><span class="comment">     * @param item &#123; Node &#125; 节点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    append(item) &#123;</span><br><span class="line">        <span class="keyword">let</span> node = <span class="keyword">new</span> Node(item);      <span class="comment">// 创建一个节点</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.head) &#123;</span><br><span class="line">            <span class="comment">// 有head头则遍历到获取到最后一个节点，把next指向新追加的节点</span></span><br><span class="line">            <span class="keyword">let</span> current = <span class="keyword">this</span>.head;</span><br><span class="line">            <span class="keyword">while</span> (current.next) &#123;</span><br><span class="line">                current = current.next;</span><br><span class="line">            &#125;</span><br><span class="line">            current.next = node;</span><br><span class="line">        </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 无head头，则直接把head头替换为新的节点</span></span><br><span class="line">            <span class="keyword">this</span>.head = node;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 追加成功后，链表的长度加1</span></span><br><span class="line">        <span class="keyword">this</span>.length++;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 向链表中的某一个位置插入 节点</span></span><br><span class="line"><span class="comment">     * @param position &#123; number &#125;</span></span><br><span class="line"><span class="comment">     * @param item &#123; Node &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    insert(position, item) &#123;</span><br><span class="line">        <span class="comment">// 边界判断 , 防止 position 越界</span></span><br><span class="line">        <span class="keyword">if</span> (position &gt; <span class="number">-1</span> &amp;&amp; position &lt; <span class="keyword">this</span>.length) &#123;</span><br><span class="line">            <span class="keyword">let</span> node = <span class="keyword">new</span> Node(item);      <span class="comment">// 创建一个节点</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 插入的位置是head头前面</span></span><br><span class="line">            <span class="keyword">if</span> (position === <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">let</span> current = <span class="keyword">this</span>.head;</span><br><span class="line">                <span class="keyword">this</span>.head = node;           <span class="comment">// 把head替换为新节点</span></span><br><span class="line">                node.next = current;        <span class="comment">// 把新节点的next指向原来的head节点</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123; <span class="comment">// 其他位置，则需要遍历链表获取到对应到插入的位置</span></span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 * 思路:</span></span><br><span class="line"><span class="comment">                 * 1. 通过positon获取到上一个节点和当前节点</span></span><br><span class="line"><span class="comment">                 * 2. 把上一个节点的next指向到新节点</span></span><br><span class="line"><span class="comment">                 * 3. 把新节点的next指向到当前节点 (插入后就是新节点的下一个节点了)</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                let &#123; current, previous &#125; = this.#getPrevAndCurrentNode(position);</span><br><span class="line">                <span class="keyword">let</span> node = <span class="keyword">new</span> Node(item);</span><br><span class="line">                previous.next = node;</span><br><span class="line">                node.next = current;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">this</span>.length++;              <span class="comment">// 插入成功后，链表的长度加1</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.warn(<span class="string">'position的值越界了'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 通过positon获取上一个节点和当前节点</span></span><br><span class="line"><span class="comment">     * @param position &#123; number &#125;</span></span><br><span class="line"><span class="comment">     * @return &#123; &#123; current, previous &#125; | undefined &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    #getPrevAndCurrentNode(position) &#123;      // #表示私有变量esnext新标准</span><br><span class="line">        <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">let</span> current;</span><br><span class="line">        <span class="keyword">let</span> previous;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">console</span>.warn(<span class="string">'当前为空'</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">undefined</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (position &gt; <span class="number">-1</span> &amp;&amp; position &lt; <span class="keyword">this</span>.length) &#123;</span><br><span class="line">            <span class="keyword">let</span> current = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (position === <span class="number">0</span>) &#123;</span><br><span class="line">                previous = <span class="literal">null</span>;</span><br><span class="line">                current = <span class="keyword">this</span>.head;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">let</span> current = <span class="keyword">this</span>.head;</span><br><span class="line">                <span class="keyword">while</span> (index &lt; position) &#123;</span><br><span class="line">                    previous = current;</span><br><span class="line">                    current = current.next;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.error(<span class="string">`position的值 "<span class="subst">$&#123; position &#125;</span>" 不符合规范`</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> &#123; current, previous &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 通过位置删除节点</span></span><br><span class="line"><span class="comment">     * @param position</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    removeAt(position) &#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 思路:</span></span><br><span class="line"><span class="comment">         * 1. 通过position 遍历链表和 找到上一个节点和当前节点</span></span><br><span class="line"><span class="comment">         * 2. 把上一个节点的next指向到当前节点的next (也就是当前节点的下一个节点)</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="comment">// postion越界判断,保证传入的位置是正确的</span></span><br><span class="line">        <span class="keyword">if</span> (position &gt; <span class="number">-1</span> &amp;&amp; position &lt; <span class="keyword">this</span>.length) &#123;</span><br><span class="line">            <span class="keyword">if</span> (position === <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">let</span> current = <span class="keyword">this</span>.head;</span><br><span class="line">                <span class="keyword">this</span>.head = current.next;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                let &#123; current, previous &#125; = this.#getPrevAndCurrentNode(position);</span><br><span class="line">                previous.next = current.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.warn(<span class="string">'position的值越界了'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.length--;      <span class="comment">// remove掉后，链表长度减1</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 通过节点找到 position</span></span><br><span class="line"><span class="comment">     * @param item &#123; Node &#125;</span></span><br><span class="line"><span class="comment">     * @return &#123; number &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    indexOf(item) &#123;</span><br><span class="line">        <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">let</span> current = <span class="keyword">this</span>.head;</span><br><span class="line">        <span class="keyword">while</span> (current.next) &#123;</span><br><span class="line">            current = current.next;</span><br><span class="line">            <span class="keyword">if</span> (current === item) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                index++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> index;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取链表头</span></span><br><span class="line"><span class="comment">     * @return &#123;  Node | null &#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    getHead() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不到200行代码，就这样一个单向链表就实现了😂</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>最后说下我个人的理解，其实学习数据结构出了数据结构本身，更多的是学习一种解决问题的思维，能够举一反三，你知道的东西多了都熟悉了，才有能力去创新。</p>
+<p>后面打算写一些非技术型的文章，输出下别的内容哈哈🤪</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2021-05-22T20:39:28.988Z" itemprop="dateUpdated">2021-05-23 04:39:28</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://ImChrisChen.Github.io">
+            <img src="/img/avatar.jpg" alt="ChrisChen">
+            ChrisChen
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Javascript/">Javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+    <nav class="post-nav flex-row flex-justify-between">
+        
+        <div class="waves-block waves-effect prev">
+            <a href="/2021/05/21/http中get和post的区别/" id="post-prev" class="post-nav-link">
+                <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+                <h4 class="title">http客户端get和post详解以及区别🧐</h4>
+            </a>
+        </div>
+        
+
+        
+        <div class="waves-block waves-effect next">
+            <a href="/2021/05/19/HTTP协议发展历史和各版本之前的区别 📖/" id="post-next" class="post-nav-link">
+                <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+                <h4 class="title">http协议发展历史和各版本之间的区别 📖</h4>
+            </a>
+        </div>
+        
+    </nav>
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ChrisChen &copy; 2018 - 2021</span>
+            <span>
+                
+                <a href="//beian.miit.gov.cn/" target="_blank">粤ICP备18132161号-1</a><br>
+                
+<!--                Power by <a href="//hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>-->
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Axios请求拦截器配置 | Yo Man!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Axios,Vue">
+    <meta name="description" content="通常在请求拦截器中可以做 Loading加载动画，token过期验证，登陆验证等等…   响应拦截器中可以做 统一报错信息处理  import Axios from &apos;axios&apos;;import router from &apos;../router&apos;;import &amp;#123; Message &amp;#125; from &apos;element-ui&apos;;Axios.defaults.baseURL = proce">
+<meta name="keywords" content="Axios,Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Axios请求拦截器配置">
+<meta property="og:url" content="https://ImChrisChen.Github.io/2019/08/14/Axios请求拦截器配置/index.html">
+<meta property="og:site_name" content="Yo Man!">
+<meta property="og:description" content="通常在请求拦截器中可以做 Loading加载动画，token过期验证，登陆验证等等…   响应拦截器中可以做 统一报错信息处理  import Axios from &apos;axios&apos;;import router from &apos;../router&apos;;import &amp;#123; Message &amp;#125; from &apos;element-ui&apos;;Axios.defaults.baseURL = proce">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-05-22T20:39:28.987Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Axios请求拦截器配置">
+<meta name="twitter:description" content="通常在请求拦截器中可以做 Loading加载动画，token过期验证，登陆验证等等…   响应拦截器中可以做 统一报错信息处理  import Axios from &apos;axios&apos;;import router from &apos;../router&apos;;import &amp;#123; Message &amp;#125; from &apos;element-ui&apos;;Axios.defaults.baseURL = proce">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yo Man!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement('script');
+            hm.src = 'https://hm.baidu.com/hm.js?42406b5925a2b21ae04d47ea125d86ee';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ChrisChen</h5>
+          <a href="mailto:309129685@qq.com" title="309129685@qq.com" class="mail">309129685@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ImChrisChen" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Axios请求拦截器配置</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Axios请求拦截器配置 😄 </h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-08-14T13:58:43.000Z" itemprop="datePublished" class="page-time">
+  2019-08-14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/代码片段/">代码片段</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-Axios请求拦截器配置" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Axios请求拦截器配置</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-08-14 21:58:43" datetime="2019-08-14T13:58:43.000Z" itemprop="datePublished">2019-08-14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/代码片段/">代码片段</a></li></ul>
+
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>通常在<strong>请求拦截器</strong>中可以做 <strong>Loading加载动画，token过期验证，登陆验证</strong>等等…</p>
+</blockquote>
+<blockquote>
+<p>响应拦截器中可以做 <strong>统一报错信息处理</strong></p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Axios <span class="keyword">from</span> <span class="string">'axios'</span>;</span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">'../router'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Message &#125; <span class="keyword">from</span> <span class="string">'element-ui'</span>;</span><br><span class="line"></span><br><span class="line">Axios.defaults.baseURL = process.env.VUE_APP_BASE_API;      <span class="comment">// 设置基础路径</span></span><br><span class="line">Axios.defaults.timeout = <span class="number">5000</span>;                              <span class="comment">// 设置请求超时时间</span></span><br><span class="line"></span><br><span class="line">Axios.interceptors.request.use(</span><br><span class="line">    config =&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> token = <span class="built_in">JSON</span>.parse(localStorage.getItem(<span class="string">'token'</span>) || <span class="literal">null</span>);</span><br><span class="line">        <span class="keyword">if</span> (token) &#123;</span><br><span class="line">            config.headers[<span class="string">'secretKey'</span>] = token.secretKey;</span><br><span class="line">            config.headers[<span class="string">'timestamp'</span>] = token.timestamp;</span><br><span class="line">            config.headers[<span class="string">'uuid'</span>] = token.uuid;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> config;</span><br><span class="line">    &#125;,</span><br><span class="line">    err =&gt; &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(err);</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// response 响应拦截器</span></span><br><span class="line">Axios.interceptors.response.use(</span><br><span class="line">    res =&gt; &#123;</span><br><span class="line">        <span class="comment">// 401 您还未登录，或登录信息已过期</span></span><br><span class="line">        <span class="keyword">if</span> (res.data.status_code !== <span class="number">200</span>) &#123;</span><br><span class="line">            Message(&#123;</span><br><span class="line">                message: res.data.message,</span><br><span class="line">                type: <span class="string">'error'</span></span><br><span class="line">            &#125;);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (res.data.status_code === <span class="number">401</span>) &#123;</span><br><span class="line">                router.push(&#123; <span class="attr">path</span>: <span class="string">'/login'</span> &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res.data;</span><br><span class="line">    &#125;,</span><br><span class="line">    err =&gt; &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(err);</span><br><span class="line">        <span class="comment">// 超时处理</span></span><br><span class="line">        <span class="keyword">let</span> originalRequest = err.config;</span><br><span class="line">    </span><br><span class="line">        <span class="built_in">console</span>.log(err.message);     <span class="comment">//timeout of 100ms exceeded</span></span><br><span class="line">    </span><br><span class="line">        <span class="keyword">if</span> (err.code === <span class="string">'ECONNABORTED'</span> &amp;&amp; err.message.indexOf(<span class="string">'timeout'</span>) !== <span class="number">-1</span> &amp;&amp; !originalRequest._retry) &#123;</span><br><span class="line">        </span><br><span class="line">            originalRequest._retry = <span class="literal">true</span></span><br><span class="line">            Message.error(<span class="string">'请求超时,尝试重新请求中...'</span>)</span><br><span class="line">        </span><br><span class="line">            <span class="comment">// 重新发起请求</span></span><br><span class="line">            <span class="keyword">return</span> Axios.request(originalRequest);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2021-05-22T20:39:28.987Z" itemprop="dateUpdated">2021-05-23 04:39:28</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://ImChrisChen.Github.io">
+            <img src="/img/avatar.jpg" alt="ChrisChen">
+            ChrisChen
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Axios/">Axios</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue/">Vue</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+    <nav class="post-nav flex-row flex-justify-between">
+        
+        <div class="waves-block waves-effect prev">
+            <a href="/2019/08/16/🤔深刻理解localStorage sessionStorage/" id="post-prev" class="post-nav-link">
+                <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+                <h4 class="title">🤔深刻理解localStorage sessionStorage</h4>
+            </a>
+        </div>
+        
+
+        
+        <div class="waves-block waves-effect next">
+            <a href="/2019/08/14/Github-上-emoji-的表情含义/" id="post-next" class="post-nav-link">
+                <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+                <h4 class="title">Github 上 emoji 的表情含义</h4>
+            </a>
+        </div>
+        
+    </nav>
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ChrisChen &copy; 2018 - 2021</span>
+            <span>
+                
+                <a href="//beian.miit.gov.cn/" target="_blank">粤ICP备18132161号-1</a><br>
+                
+<!--                Power by <a href="//hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>-->
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

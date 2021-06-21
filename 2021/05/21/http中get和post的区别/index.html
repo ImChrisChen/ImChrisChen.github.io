@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>http客户端get和post详解以及区别🧐 | Yo Man!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Http">
+    <meta name="description" content="前言这应该算是一个高频面试题了吧，来来输出一下… 什么是http，为何要使用它之类的就不讲了..  ​    尽可能写详细点吧，不然一个表格就搞定了  区别语义不通最直观的就是语义不同了 说到语义，http客户端在当时设计这些API的时候（我没去参与设计过，我猜测的哈哈哈[狗头]），也是有一套规范的，当然这个规范不是强约束，你不按照这个语言规则来，你的程序也能跑 http不同方法代表的语义，分别对">
+<meta name="keywords" content="Http">
+<meta property="og:type" content="article">
+<meta property="og:title" content="http客户端get和post详解以及区别🧐">
+<meta property="og:url" content="https://ImChrisChen.Github.io/2021/05/21/http中get和post的区别/index.html">
+<meta property="og:site_name" content="Yo Man!">
+<meta property="og:description" content="前言这应该算是一个高频面试题了吧，来来输出一下… 什么是http，为何要使用它之类的就不讲了..  ​    尽可能写详细点吧，不然一个表格就搞定了  区别语义不通最直观的就是语义不同了 说到语义，http客户端在当时设计这些API的时候（我没去参与设计过，我猜测的哈哈哈[狗头]），也是有一套规范的，当然这个规范不是强约束，你不按照这个语言规则来，你的程序也能跑 http不同方法代表的语义，分别对">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-06-12T06:59:21.096Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="http客户端get和post详解以及区别🧐">
+<meta name="twitter:description" content="前言这应该算是一个高频面试题了吧，来来输出一下… 什么是http，为何要使用它之类的就不讲了..  ​    尽可能写详细点吧，不然一个表格就搞定了  区别语义不通最直观的就是语义不同了 说到语义，http客户端在当时设计这些API的时候（我没去参与设计过，我猜测的哈哈哈[狗头]），也是有一套规范的，当然这个规范不是强约束，你不按照这个语言规则来，你的程序也能跑 http不同方法代表的语义，分别对">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yo Man!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement('script');
+            hm.src = 'https://hm.baidu.com/hm.js?42406b5925a2b21ae04d47ea125d86ee';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ChrisChen</h5>
+          <a href="mailto:309129685@qq.com" title="309129685@qq.com" class="mail">309129685@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ImChrisChen" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">http客户端get和post详解以及区别🧐</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">http客户端get和post详解以及区别🧐 😄 </h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-05-20T19:46:59.000Z" itemprop="datePublished" class="page-time">
+  2021-05-21
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/计算机网络/">计算机网络</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#区别"><span class="post-toc-number">2.</span> <span class="post-toc-text">区别</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#语义不通"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">语义不通</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参数传递形式不一样"><span class="post-toc-number">3.</span> <span class="post-toc-text">参数传递形式不一样</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#GET"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">GET</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#POST"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">POST</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#幂等"><span class="post-toc-number">4.</span> <span class="post-toc-text">幂等</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#什么是幂等？"><span class="post-toc-number">4.0.1.</span> <span class="post-toc-text">什么是幂等？</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-http中get和post的区别" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">http客户端get和post详解以及区别🧐</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-05-21 03:46:59" datetime="2021-05-20T19:46:59.000Z" itemprop="datePublished">2021-05-21</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/计算机网络/">计算机网络</a></li></ul>
+
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这应该算是一个高频面试题了吧，来来输出一下… 什么是http，为何要使用它之类的就不讲了.. </p>
+<p>​    尽可能写详细点吧，不然一个表格就搞定了</p>
+<hr>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><h3 id="语义不通"><a href="#语义不通" class="headerlink" title="语义不通"></a>语义不通</h3><p>最直观的就是语义不同了</p>
+<p>说到语义，http客户端在当时设计这些API的时候（我没去参与设计过，我猜测的哈哈哈[狗头]），也是有一套规范的，当然这个规范不是强约束，你不按照这个语言规则来，你的程序也能跑</p>
+<p>http不同方法代表的语义，分别对应来CURD的4个操作 RESUful API</p>
+<ul>
+<li>GET 在服务器检索某个资源</li>
+<li>POST 在服务器创建资源</li>
+<li>PUT 在服务器更改资源状态或对其进行更新</li>
+<li>DELETE 在服务器删除某个资源</li>
+</ul>
+<p>RESUful API 风格就是遵循的http的语义化去设计的</p>
+<h2 id="参数传递形式不一样"><a href="#参数传递形式不一样" class="headerlink" title="参数传递形式不一样"></a>参数传递形式不一样</h2><h3 id="GET"><a href="#GET" class="headerlink" title="GET"></a>GET</h3><p>GET请求的参数是拼接在URL后面的，通过 <code>= &amp;符号进行分割</code>  <code>url?key1=value2&amp;key2=value2</code></p>
+<p>例如: <code>http://chrischen.top/api?id=10&amp;name=chris</code> </p>
+<p>服务端获取参数需要从 request中的 query 字段去获取</p>
+<p>由于get参数都是明文显示，所以例如身份证号码，用户名密码，这类敏感信息是不应该用get去请求的</p>
+<h3 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h3><p>post请求的参数则会包含在请求体中，通常服务端用request中的 body字段去获取的，</p>
+<p>而且发送post请求传递参数的内容格式（content-type）也是不一样的，既然聊到content-type，下面就多写点</p>
+<p><strong>在响应中</strong>: Content-Type标头告诉客户端实际返回的内容的内容类型。浏览器会在某些情况下进行MIME查找，并不一定遵循此标题的值; 为了防止这种行为，可以将标题 [<code>X-Content-Type-Options</code>] 设置为<strong>nosniff</strong></p>
+<p><strong>在请求中</strong>: 在 post 或 put 请求，客户端告诉服务器实际发送的数据类型 通过content-type去设置发送的数据类型</p>
+<p><strong>常用的POST/PUT请求数据类型</strong></p>
+<p>更多 请求类型响应类型具体可参考 👉🏻  <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types#重要的mime类型" target="_blank" rel="noopener">MIME 类型 - HTTP | MDN (mozilla.org)</a></p>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="comment">// &#123;id:123,name:'chris'&#125;</span></span><br><span class="line"><span class="attribute">Content</span>-Type: application/json;				</span><br><span class="line"></span><br><span class="line"><span class="comment">// id=123&amp;name=chris</span></span><br><span class="line"><span class="attribute">Content</span>-Type: application/x-www-form-urlencoded;</span><br></pre></td></tr></table></figure>
+
+<h2 id="幂等"><a href="#幂等" class="headerlink" title="幂等"></a>幂等</h2><p>​    GET请求是幂等的，POST请求不幂等</p>
+<h4 id="什么是幂等？"><a href="#什么是幂等？" class="headerlink" title="什么是幂等？"></a>什么是幂等？</h4><p>一个HTTP方法是<strong>幂等</strong>的，指的是同样的请求被执行一次与连续执行多次的效果是一样的，服务器的状态也是一样的。换句话说就是，幂等方法不应该具有副作用（统计用途除外)</p>
+<p>下面几种方法是幂等</p>
+<ul>
+<li>GET</li>
+<li>HEAD</li>
+<li>PUT</li>
+<li>DELETE</li>
+</ul>
+<p>未完待续。。。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2021-06-12T06:59:21.096Z" itemprop="dateUpdated">2021-06-12 14:59:21</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://ImChrisChen.Github.io">
+            <img src="/img/avatar.jpg" alt="ChrisChen">
+            ChrisChen
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Http/">Http</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+    <nav class="post-nav flex-row flex-justify-between">
+        
+        <div class="waves-block waves-effect prev">
+            <a href="/2021/05/22/Vue3源码解读-响应式数据原理/" id="post-prev" class="post-nav-link">
+                <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+                <h4 class="title">Vue3源码解读 - 响应式数据原理</h4>
+            </a>
+        </div>
+        
+
+        
+        <div class="waves-block waves-effect next">
+            <a href="/2021/05/20/JavaScript实现一个链表-数据结构/" id="post-next" class="post-nav-link">
+                <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+                <h4 class="title">JavaScript实现一个链表😼 - 数据结构</h4>
+            </a>
+        </div>
+        
+    </nav>
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ChrisChen &copy; 2018 - 2021</span>
+            <span>
+                
+                <a href="//beian.miit.gov.cn/" target="_blank">粤ICP备18132161号-1</a><br>
+                
+<!--                Power by <a href="//hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>-->
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
