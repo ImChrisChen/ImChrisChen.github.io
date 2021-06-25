@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://ImChrisChen.Github.io/"/>
-  <updated>2021-06-21T13:11:18.389Z</updated>
+  <updated>2021-06-25T05:47:45.262Z</updated>
   <id>https://ImChrisChen.Github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>配置vim下nginx语法高亮</title>
+    <link href="https://ImChrisChen.Github.io/2021/06/25/%E9%85%8D%E7%BD%AEvim%E4%B8%8Bnginx%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/"/>
+    <id>https://ImChrisChen.Github.io/2021/06/25/配置vim下nginx语法高亮/</id>
+    <published>2021-06-25T05:31:37.000Z</published>
+    <updated>2021-06-25T05:47:45.262Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="下载vim高亮语法配置"><a href="#下载vim高亮语法配置" class="headerlink" title="下载vim高亮语法配置"></a>下载vim高亮语法配置</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">cd ~/.vim/syntax/</span><br><span class="line"></span><br><span class="line">wget http://www.vim.org/scripts/download_script.php?src_id=14376 -O nginx.vim</span><br></pre></td></tr></table></figure><h2 id="修改filetype-vim-配置"><a href="#修改filetype-vim-配置" class="headerlink" title="修改filetype.vim 配置"></a>修改filetype.vim 配置</h2><p>在 <code>~/.vim/filetype.vim</code> 文件中添加如下配置</p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot; nginx </span><br><span class="line">au BufNewFile,BufRead /usr/local/etc/nginx setf nginx</span><br></pre></td></tr></table></figure><p><code>/usr/local/etc/nginx</code> 为你的nginx路径</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;下载vim高亮语法配置&quot;&gt;&lt;a href=&quot;#下载vim高亮语法配置&quot; class=&quot;headerlink&quot; title=&quot;下载vim高亮语法配置&quot;&gt;&lt;/a&gt;下载vim高亮语法配置&lt;/h2&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;tabl
+      
+    
+    </summary>
+    
+    
+      <category term="nginx" scheme="https://ImChrisChen.Github.io/tags/nginx/"/>
+    
+      <category term="配置" scheme="https://ImChrisChen.Github.io/tags/%E9%85%8D%E7%BD%AE/"/>
+    
+  </entry>
   
   <entry>
     <title>Vue 自定义指令封装数据埋点🐛</title>
@@ -300,11 +325,11 @@
     
       <category term="Javascript" scheme="https://ImChrisChen.Github.io/tags/Javascript/"/>
     
-      <category term="Typescript" scheme="https://ImChrisChen.Github.io/tags/Typescript/"/>
-    
       <category term="WebComponents" scheme="https://ImChrisChen.Github.io/tags/WebComponents/"/>
     
       <category term="Antd" scheme="https://ImChrisChen.Github.io/tags/Antd/"/>
+    
+      <category term="Typescript" scheme="https://ImChrisChen.Github.io/tags/Typescript/"/>
     
       <category term="React" scheme="https://ImChrisChen.Github.io/tags/React/"/>
     
@@ -506,34 +531,6 @@
     
     
       <category term="微信小程序/小游戏" scheme="https://ImChrisChen.Github.io/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-%E5%B0%8F%E6%B8%B8%E6%88%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用 git status 显示中文乱码问题😼</title>
-    <link href="https://ImChrisChen.Github.io/2020/02/11/Git%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98%F0%9F%98%BC/"/>
-    <id>https://ImChrisChen.Github.io/2020/02/11/Git显示中文乱码问题😼/</id>
-    <published>2020-02-11T05:11:38.000Z</published>
-    <updated>2021-05-22T20:39:28.987Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p><code>git status</code>查看有改动但未提交的文件时总只显示数字串，显示不出中文文件名，非常不方便</p><p><code>git log</code> 却能正确显示</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://cdn.chrischen.top/blog/HO1RNF.png" alt title>                </div>                <div class="image-caption"></div>            </figure><h2 id="寻找原因"><a href="#寻找原因" class="headerlink" title="寻找原因"></a>寻找原因</h2><p>了解后，<strong>由于Git在默认设置下，中文文件名在工作区状态输出，中文名不能正确显示，而是显示为八进制的字符编码</strong>。</p><h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>将 Git的配置项 core.quotepath 设置为false，  <code>quotepath</code> 表示引用路径 加上–global代表全局配置</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global core.quotepath false</span><br></pre></td></tr></table></figure><p>输入命令则自动写入到 ~/.gitconfig 文件中</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://cdn.chrischen.top/blog/kG5ReN.png" alt title>                </div>                <div class="image-caption"></div>            </figure><p>当然也可以直接修改 .gitconfig 进行配置等等，还可以设置alias等一些列配置</p><p>git全局配置文件 Mac 一般存放在 <code>~/.gitconfig</code> 中</p><h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p>这样设置完成后，一般都能看见中文了，如果还是乱码，可以看看 shell 终端 bash ，zsh 等配置 是否设置支持中文显示</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://cdn.chrischen.top/blog/7OIbXt.png" alt title>                </div>                <div class="image-caption"></div>            </figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;现象&quot;&gt;&lt;a href=&quot;#现象&quot; class=&quot;headerlink&quot; title=&quot;现象&quot;&gt;&lt;/a&gt;现象&lt;/h2&gt;&lt;p&gt;&lt;code&gt;git status&lt;/code&gt;查看有改动但未提交的文件时总只显示数字串，显示不出中文文件名，非常不方便&lt;/p&gt;
-&lt;p&gt;&lt;co
-      
-    
-    </summary>
-    
-      <category term="工具配置" scheme="https://ImChrisChen.Github.io/categories/%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE/"/>
-    
-    
-      <category term="Mac" scheme="https://ImChrisChen.Github.io/tags/Mac/"/>
-    
-      <category term="git" scheme="https://ImChrisChen.Github.io/tags/git/"/>
     
   </entry>
   
