@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>使用 mkcert + Nginx 快速实现本地https | Yo Man!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Http,Nginx">
+    <meta name="description" content="mkcert是什么？因为最近在做公司的一些移动端的web项目，经常需要在手机上进行真机调试，很多场景下都需要使用到 https，而且在开发阶段为了尽可能与线上的环境保持一致，所以打算直接在本地 使用https进行开发调试 然后发现了一款工具，它用于在本地搭建受信证书环境。试用了一下，非常便捷。 首次运行时，它会生成一个本地CA，即本地公证机构根证书，然后把此CA添加到系统受信列表。最后，由此CA颁">
+<meta name="keywords" content="Http,Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 mkcert + Nginx 快速实现本地https">
+<meta property="og:url" content="https://ImChrisChen.Github.io/2021/06/23/使用-mkcert-快速实现本地https/index.html">
+<meta property="og:site_name" content="Yo Man!">
+<meta property="og:description" content="mkcert是什么？因为最近在做公司的一些移动端的web项目，经常需要在手机上进行真机调试，很多场景下都需要使用到 https，而且在开发阶段为了尽可能与线上的环境保持一致，所以打算直接在本地 使用https进行开发调试 然后发现了一款工具，它用于在本地搭建受信证书环境。试用了一下，非常便捷。 首次运行时，它会生成一个本地CA，即本地公证机构根证书，然后把此CA添加到系统受信列表。最后，由此CA颁">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://cdn.chrischen.top/blog/TDnbAU.png">
+<meta property="og:image" content="http://cdn.chrischen.top/blog/lzOWPK.png">
+<meta property="og:updated_time" content="2021-06-29T06:14:33.005Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用 mkcert + Nginx 快速实现本地https">
+<meta name="twitter:description" content="mkcert是什么？因为最近在做公司的一些移动端的web项目，经常需要在手机上进行真机调试，很多场景下都需要使用到 https，而且在开发阶段为了尽可能与线上的环境保持一致，所以打算直接在本地 使用https进行开发调试 然后发现了一款工具，它用于在本地搭建受信证书环境。试用了一下，非常便捷。 首次运行时，它会生成一个本地CA，即本地公证机构根证书，然后把此CA添加到系统受信列表。最后，由此CA颁">
+<meta name="twitter:image" content="http://cdn.chrischen.top/blog/TDnbAU.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yo Man!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement('script');
+            hm.src = 'https://hm.baidu.com/hm.js?42406b5925a2b21ae04d47ea125d86ee';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ChrisChen</h5>
+          <a href="mailto:309129685@qq.com" title="309129685@qq.com" class="mail">309129685@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ImChrisChen" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">使用 mkcert + Nginx 快速实现本地https</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">使用 mkcert + Nginx 快速实现本地https 😄 </h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-06-23T12:24:16.000Z" itemprop="datePublished" class="page-time">
+  2021-06-23
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#mkcert是什么？"><span class="post-toc-number">1.</span> <span class="post-toc-text">mkcert是什么？</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装mkcert"><span class="post-toc-number">2.</span> <span class="post-toc-text">安装mkcert</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#生成本地-Root-CA证书"><span class="post-toc-number">3.</span> <span class="post-toc-text">生成本地 Root CA证书</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#生成下级证书"><span class="post-toc-number">4.</span> <span class="post-toc-text">生成下级证书</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#配置Nginx使用证书"><span class="post-toc-number">5.</span> <span class="post-toc-text">配置Nginx使用证书</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-使用-mkcert-快速实现本地https" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">使用 mkcert + Nginx 快速实现本地https</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-06-23 20:24:16" datetime="2021-06-23T12:24:16.000Z" itemprop="datePublished">2021-06-23</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="mkcert是什么？"><a href="#mkcert是什么？" class="headerlink" title="mkcert是什么？"></a>mkcert是什么？</h2><p>因为最近在做公司的一些移动端的web项目，经常需要在手机上进行真机调试，很多场景下都需要使用到 https，而且在开发阶段为了尽可能与线上的环境保持一致，所以打算直接在本地 使用https进行开发调试</p>
+<p>然后发现了一款工具，它用于在本地搭建受信证书环境。试用了一下，非常便捷。</p>
+<p>首次运行时，它会生成一个<strong>本地CA</strong>，即本地公证机构根证书，然后<strong>把此CA添加到系统受信列表</strong>。最后，由此CA颁发（签名）新的下级证书给各网站使用。</p>
+<h2 id="安装mkcert"><a href="#安装mkcert" class="headerlink" title="安装mkcert"></a>安装mkcert</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> brew install mkcert</span></span><br><span class="line"></span><br><span class="line">Created a new local CA at "/Users/ChrisChen/Library/Application Support/mkcert" ?</span><br><span class="line">The local CA is now installed in the system trust store! ⚡️</span><br><span class="line">The local CA is now installed in the Firefox trust store (requires restart)! ?</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成本地-Root-CA证书"><a href="#生成本地-Root-CA证书" class="headerlink" title="生成本地 Root CA证书"></a>生成本地 Root CA证书</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkcert -install</span></span><br></pre></td></tr></table></figure>
+
+<p>``/Users/chrischen/Library/Application Support/mkcert` 生成的CA证书的路径</p>
+<h2 id="生成下级证书"><a href="#生成下级证书" class="headerlink" title="生成下级证书"></a>生成下级证书</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkcert localhost 127.0.0.1</span></span><br></pre></td></tr></table></figure>
+
+<img src="http://cdn.chrischen.top/blog/TDnbAU.png" style="zoom:50%;">
+
+<p>如果要生成泛域名证书也可以使用 <code>mkcert &quot;*.wps.cn&quot;</code> 类似的域名（要注意使用双引号才可以）</p>
+<h2 id="配置Nginx使用证书"><a href="#配置Nginx使用证书" class="headerlink" title="配置Nginx使用证书"></a>配置Nginx使用证书</h2><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">443</span> ssl;</span><br><span class="line">    <span class="attribute">server_name</span>  localhost;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_certificate</span>      /Users/chrischen/cert/local/localhost+<span class="number">1</span>.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span>  /Users/chrischen/cert/local/localhost+<span class="number">1</span>-key.pem;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_session_cache</span>    shared:SSL:<span class="number">1m</span>;</span><br><span class="line">    <span class="attribute">ssl_session_timeout</span>  <span class="number">5m</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_ciphers</span>  HIGH:!aNULL:!MD5;</span><br><span class="line">    <span class="attribute">ssl_prefer_server_ciphers</span>  <span class="literal">on</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重启nginx，访问 <a href="https://localhost/" target="_blank" rel="noopener"> https://localhost </a> </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo nginx -s reload</span><br></pre></td></tr></table></figure>
+
+<img src="http://cdn.chrischen.top/blog/lzOWPK.png" style="zoom:80%;">
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2021-06-29T06:14:33.005Z" itemprop="dateUpdated">2021-06-29 14:14:33</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://ImChrisChen.Github.io">
+            <img src="/img/avatar.jpg" alt="ChrisChen">
+            ChrisChen
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Http/">Http</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+    <nav class="post-nav flex-row flex-justify-between">
+        
+        <div class="waves-block waves-effect prev">
+            <a href="/2021/06/25/配置vim下nginx语法高亮/" id="post-prev" class="post-nav-link">
+                <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+                <h4 class="title">配置vim下nginx语法高亮</h4>
+            </a>
+        </div>
+        
+
+        
+        <div class="waves-block waves-effect next">
+            <a href="/2021/06/21/Vue-自定义指令封装数据埋点/" id="post-next" class="post-nav-link">
+                <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+                <h4 class="title">Vue 自定义指令封装数据埋点🐛</h4>
+            </a>
+        </div>
+        
+    </nav>
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ChrisChen &copy; 2018 - 2021</span>
+            <span>
+                
+                <a href="//beian.miit.gov.cn/" target="_blank">粤ICP备18132161号-1</a><br>
+                
+<!--                Power by <a href="//hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>-->
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>NestJS 核心特性及概念梳理 「持续补充」 | Yo Man!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Typescript,NodeJS,NestJS">
+    <meta name="description" content="前言刚入职新公司，接手到一个NestJS的项目（终于不用写HTML 和 CSS了），用于做前后端API交互的中间层处理，之前也有用NestJS写过一些自己的Demo项目，但是没太系统性的深入学习，现在趁着这次机会系统性的学习一下NestJS，顺便整理成文档… NestJS是什么？以下是官网的原话  Nest 是一个用于构建高效，可扩展的 Node.js 服务器端应用程序的框架。它使用渐进式 Jav">
+<meta name="keywords" content="Typescript,NodeJS,NestJS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NestJS 核心特性及概念梳理 「持续补充」">
+<meta property="og:url" content="https://ImChrisChen.Github.io/2021/06/27/NestJS-核心特性及概念梳理/index.html">
+<meta property="og:site_name" content="Yo Man!">
+<meta property="og:description" content="前言刚入职新公司，接手到一个NestJS的项目（终于不用写HTML 和 CSS了），用于做前后端API交互的中间层处理，之前也有用NestJS写过一些自己的Demo项目，但是没太系统性的深入学习，现在趁着这次机会系统性的学习一下NestJS，顺便整理成文档… NestJS是什么？以下是官网的原话  Nest 是一个用于构建高效，可扩展的 Node.js 服务器端应用程序的框架。它使用渐进式 Jav">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-06-30T02:25:53.893Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NestJS 核心特性及概念梳理 「持续补充」">
+<meta name="twitter:description" content="前言刚入职新公司，接手到一个NestJS的项目（终于不用写HTML 和 CSS了），用于做前后端API交互的中间层处理，之前也有用NestJS写过一些自己的Demo项目，但是没太系统性的深入学习，现在趁着这次机会系统性的学习一下NestJS，顺便整理成文档… NestJS是什么？以下是官网的原话  Nest 是一个用于构建高效，可扩展的 Node.js 服务器端应用程序的框架。它使用渐进式 Jav">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yo Man!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement('script');
+            hm.src = 'https://hm.baidu.com/hm.js?42406b5925a2b21ae04d47ea125d86ee';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ChrisChen</h5>
+          <a href="mailto:309129685@qq.com" title="309129685@qq.com" class="mail">309129685@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ImChrisChen" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">NestJS 核心特性及概念梳理 「持续补充」</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">NestJS 核心特性及概念梳理 「持续补充」 😄 </h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-06-27T08:11:26.000Z" itemprop="datePublished" class="page-time">
+  2021-06-27
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/应用架构/">应用架构</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#NestJS是什么？"><span class="post-toc-number">2.</span> <span class="post-toc-text">NestJS是什么？</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Nest的一次请求生命周期"><span class="post-toc-number">3.</span> <span class="post-toc-text">Nest的一次请求生命周期</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#依赖注入"><span class="post-toc-number">4.</span> <span class="post-toc-text">依赖注入</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#控制器"><span class="post-toc-number">5.</span> <span class="post-toc-text">控制器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#守卫"><span class="post-toc-number">6.</span> <span class="post-toc-text">守卫</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#管道"><span class="post-toc-number">7.</span> <span class="post-toc-text">管道</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#转换管道使用"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">转换管道使用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#验证管道使用"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">验证管道使用</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#拦截器"><span class="post-toc-number">8.</span> <span class="post-toc-text">拦截器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#拦截器的使用（局部）"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">拦截器的使用（局部）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#全局拦截器"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">全局拦截器</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-NestJS-核心特性及概念梳理" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">NestJS 核心特性及概念梳理 「持续补充」</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-06-27 16:11:26" datetime="2021-06-27T08:11:26.000Z" itemprop="datePublished">2021-06-27</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/应用架构/">应用架构</a></li></ul>
+
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>刚入职新公司，接手到一个NestJS的项目（终于不用写HTML 和 CSS了），用于做前后端API交互的中间层处理，之前也有用NestJS写过一些自己的Demo项目，但是没太系统性的深入学习，现在趁着这次机会系统性的学习一下NestJS，顺便整理成文档…</p>
+<h2 id="NestJS是什么？"><a href="#NestJS是什么？" class="headerlink" title="NestJS是什么？"></a>NestJS是什么？</h2><p>以下是官网的原话</p>
+<hr>
+<p>Nest 是一个用于构建高效，可扩展的 <a href="http://nodejs.cn/" target="_blank" rel="noopener">Node.js</a> 服务器端应用程序的框架。它使用渐进式 JavaScript，内置并完全支持 <a href="https://www.tslang.cn/" target="_blank" rel="noopener">TypeScript</a>（但仍然允许开发人员使用纯 JavaScript 编写代码）并结合了 OOP（面向对象编程），FP（函数式编程）和 FRP（函数式响应编程）的元素。</p>
+<p>在底层，Nest使用强大的 HTTP Server 框架，如 Express（默认）和 Fastify。Nest 在这些框架之上提供了一定程度的抽象，同时也将其 API 直接暴露给开发人员。这样可以轻松使用每个平台的无数第三方模块。</p>
+<p>Nest 提供了一个开箱即用的应用程序架构，允许开发人员和团队创建高度可测试，可扩展，松散耦合且易于维护的应用程序。</p>
+<hr>
+<p>加上我自己的了解，总结一下分为几个特征</p>
+<ul>
+<li>是一个NodeJS的框架</li>
+<li>内置支持Typescript</li>
+<li>支持面向对象编程（OOP） / 函数式编程（FP）/ 函数式响应编程（FRP）</li>
+<li>HTTP 服务器<ul>
+<li>Express （默认）</li>
+<li>Fastify</li>
+</ul>
+</li>
+<li>核心特性<ul>
+<li>依赖注入 - DI</li>
+<li>中间件 - Middleware</li>
+<li>守卫 - Guards</li>
+<li>拦截器 - interceptors</li>
+<li>管道 - Pipe</li>
+<li>控制器 - Controller</li>
+<li>模块 - Module</li>
+<li>微服务</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>本文主要谈及一些和其他Node框架稍微差异的特性，比如<code>依赖注入</code>、<code>控制器</code>、<code>管道</code>、<code>拦截器</code>、<code>模块</code>、<code>微服务</code>。</p>
+</blockquote>
+<p>本文章先从Nest的一个请求的生命周期开始讲解</p>
+<h2 id="Nest的一次请求生命周期"><a href="#Nest的一次请求生命周期" class="headerlink" title="Nest的一次请求生命周期"></a>Nest的一次请求生命周期</h2><p>请求发起： 中间件 =&gt; 守卫 =&gt; 拦截器 =&gt; 管道 =&gt; 控制器</p>
+<p>​                                                                                    ⬇️</p>
+<p>响应响应：             HTTP Response  &lt;= 拦截器 &lt;= 控制器</p>
+<blockquote>
+<p> 这次没画图了，以后找到好用的画图工具补一下  😅</p>
+</blockquote>
+<h2 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h2><p>在Nest中使用了大量的装饰器语法，依赖注入也是通过装饰器的形式进行实现</p>
+<p>使用 @Injectable() 装饰的类，可以在任何地方被注入，下面看依赖注入在Nest中的具体使用</p>
+<hr>
+<p><code>Provides</code>是Nest的最基本的一个概念，许多基本的Nest类可能视为provider-service，repository，helper等等，在实际开发中，比如常用的service， repository。有了依赖注入我们能够提高应用程序的灵活性和模块化程度。举个例子说明：</p>
+<p>app.module.t</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Module &#125; <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AppController &#125; <span class="keyword">from</span> <span class="string">'./app.controller'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AppService &#125; <span class="keyword">from</span> <span class="string">'./app.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Module</span>(&#123;</span><br><span class="line">  imports: [],</span><br><span class="line">  controllers: [AppController],</span><br><span class="line">    <span class="comment">// 把AppService导入到provides中， 在注入依赖时，使用provides建立对象之间的依赖关系</span></span><br><span class="line">  providers: [AppService], </span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>app.services.ts</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 Injectable 装饰器把该类添加到IoC容器中（在其他文件中就可以完成依赖注入并自动实例化 AppService ）</span></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppService &#123;</span><br><span class="line">  getHello(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello World!'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>app.controller.ts</p>
+<p>通过该装饰器使Nest知道这个类是一个provider，现在我们使用类构造函数注入该服务</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Controller, Get &#125; <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AppService &#125; <span class="keyword">from</span> <span class="string">'./app.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppController &#123;</span><br><span class="line">  <span class="comment">// 1. 构造函数中 注入AppService类</span></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> readonly appService: AppService</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. 使用 属性注入的形式 注入 AppService类</span></span><br><span class="line">  <span class="comment">// private readonly appService: AppService</span></span><br><span class="line">    </span><br><span class="line">  <span class="meta">@Get</span>()</span><br><span class="line">  getHello(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.appService.getHello();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面代码来看， 我们在Controller里使用AppService不是通过使用New来实例化， 而是在constuctor声明即可。</p>
+<p>可看出依赖注入的两个优势：</p>
+<ol>
+<li>依赖管理交给Nest运行时处理</li>
+<li>依赖项只关注注入类型，不关注具体实例，具有高度解偶性</li>
+</ol>
+<h2 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h2><p>一般Node框架（Express，Koa）都有没有控制器这个概念，除了阿里的Egg这种上层的封装框架，Nest 的控制器相当于路由的概念</p>
+<h2 id="守卫"><a href="#守卫" class="headerlink" title="守卫"></a>守卫</h2><p>未完待续。。。</p>
+<h2 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h2><p>管道是具有 <code>@Injectable()</code> 装饰器的类。管道应实现 <code>PipeTransform</code> 接口</p>
+<p>当在 Pipe 中发生异常，controller 不会继续执行任何方法。</p>
+<p>管道有两个类型：</p>
+<ul>
+<li>转换：管道将输入数据转换为所需的数据输出 </li>
+<li>验证：对输入数据进行验证，比如form表单提交的数据类型</li>
+</ul>
+<p>在这两种情况下, 管道 <code>参数(arguments)</code> 会由 <a href="https://docs.nestjs.cn/7/controllers?id=路由参数" target="_blank" rel="noopener">控制器(controllers)的路由处理程序</a> 进行处理. Nest 会在调用这个方法之前插入一个管道，管道会先拦截方法的调用参数,进行转换或是验证处理，然后用转换好或是验证好的参数调用原方法。</p>
+<h3 id="转换管道使用"><a href="#转换管道使用" class="headerlink" title="转换管道使用"></a>转换管道使用</h3><p>validation.pipe.ts</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; PipeTransform, ArgumentMetadata &#125; <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ValidationPipe <span class="keyword">implements</span> PipeTransform &#123;</span><br><span class="line">  <span class="comment">// 每个管道必须提供 transform() 方法。     </span></span><br><span class="line">  <span class="comment">// 这个方法有两个参数 1.value 2.metadata</span></span><br><span class="line">  transform(value: <span class="built_in">string</span>, metadata: ArgumentMetadata): <span class="built_in">number</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Number</span>(value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>blog.controller.ts</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ValidationPipe &#125; <span class="keyword">from</span> <span class="string">'@pipe/validation.pipe.ts'</span></span><br><span class="line"><span class="meta">@Controller</span>(<span class="string">'blog'</span>)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> BlogController &#123;</span><br><span class="line">  <span class="meta">@Get</span>(<span class="string">':id'</span>)</span><br><span class="line">  <span class="meta">@UsePipes</span>(<span class="keyword">new</span> ValidationPipe())		<span class="comment">// 使用@UsePipes装饰器</span></span><br><span class="line">  findOne(<span class="meta">@Param</span>(<span class="string">'id'</span>) id: <span class="built_in">string</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.blogService.findOne(+id);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="验证管道使用"><a href="#验证管道使用" class="headerlink" title="验证管道使用"></a>验证管道使用</h3><p>validation.pipe.ts</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; PipeTransform, ArgumentMetadata &#125; <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ValidationPipe <span class="keyword">implements</span> PipeTransform &#123;</span><br><span class="line">  <span class="comment">// 每个管道必须提供 transform() 方法。     </span></span><br><span class="line">  <span class="comment">// 这个方法有两个参数 1.value 2.metadata</span></span><br><span class="line">  transform(value: <span class="built_in">string</span>, metadata: ArgumentMetadata): <span class="built_in">number</span> &#123;</span><br><span class="line">    <span class="comment">// value 就是接收到的 id</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Number</span>(value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>blog.controller.ts</p>
+<p>参数验证管道，在要验证的管道的前面加上 <code>new Pipe()</code> 将参数作为 <code>pipe</code> 实例里的 <code>transform</code> 方法中的第一个参数</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ValidationPipe &#125; <span class="keyword">from</span> <span class="string">'@pipe/validation.pipe.ts'</span></span><br><span class="line"><span class="meta">@Controller</span>(<span class="string">'blog'</span>)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> BlogController &#123;</span><br><span class="line">  <span class="meta">@Get</span>(<span class="string">':id'</span>)</span><br><span class="line">  <span class="comment">// 参数验证管道，</span></span><br><span class="line">  findOne(<span class="meta">@Param</span>(<span class="string">'id'</span>, <span class="keyword">new</span> ValidationPipe()) id: <span class="built_in">string</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.blogService.findOne(+id);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h2><p><strong>拦截器（在使用之前进行拦截）：对拦截器装饰的方法的返回值进行拦截。</strong> 明白这一点后，就很容易理解 为什么要要手动调用 CallHeadler.handle() 才会触发到被拦截的方法了。</p>
+<p>好处</p>
+<ul>
+<li>提前发现处理异常</li>
+<li>对操作进行收拢，统一处理</li>
+</ul>
+<p>每个拦截器都有 <code>intercept()</code> 方法，它接收2个参数。</p>
+<ul>
+<li><p><code>ExecutionContext</code> 实例（与守卫完全相同的对象）<code>ExecutionContext</code> 继承自 <code>ArgumentsHost</code> 。 <code>ArgumentsHost</code> 是传递给原始处理程序的参数的一个包装 ，它根据应用程序的类型包含不同的参数数组</p>
+</li>
+<li><p>CallHandler - 调用处理程序，调用这个参数的 <code>handle()</code>方法 （并且已经返回值）被拦截器包裹的方法才被触发，handle() 返回一个 <code>Observable</code>，可以帮助我们进行例如响应操作。</p>
+<p>比如 CatsController 中的 create 方法用了拦截器，在这个拦截器中的 intercept方法内，必须调用 CallHandler.handler() 方法，create才会被执行。不调用CallHandler则不执行create()</p>
+</li>
+</ul>
+<h3 id="拦截器的使用（局部）"><a href="#拦截器的使用（局部）" class="headerlink" title="拦截器的使用（局部）"></a>拦截器的使用（局部）</h3><p>拦截器可以装饰在</p>
+<ol>
+<li><p>在class上 - <strong>这种方式，控制器 实例 的每个方法触发，都会执行拦截器</strong></p>
+</li>
+<li><p>在method 上 - 只对当前装饰的方法有效</p>
+</li>
+</ol>
+<p>auto.interceptor.ts</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; CallHandler, ExecutionContext, NestInterceptor &#125; <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Observable &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AutoInterceptor <span class="keyword">implements</span> NestInterceptor &#123;</span><br><span class="line">  <span class="comment">// 拦截器类 必须实现的一个方法 intercept</span></span><br><span class="line">  intercept(</span><br><span class="line">    context: ExecutionContext,</span><br><span class="line">    next: CallHandler&lt;<span class="built_in">any</span>&gt;,</span><br><span class="line">  ): Observable&lt;<span class="built_in">any</span>&gt; | <span class="built_in">Promise</span>&lt;Observable&lt;<span class="built_in">any</span>&gt;&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'---------'</span>);</span><br><span class="line">    <span class="keyword">return</span> next.handle().pipe();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>auto.interceptor.ts </p>
+<p>把拦截器装饰在class上</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; AutoInterceptor &#125; <span class="keyword">from</span> <span class="string">'../interceptors/auto.interceptor'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span>()</span><br><span class="line"><span class="meta">@UseInterceptors</span>(AutoInterceptor)			 <span class="comment">// 1. 传入class使用拦截器</span></span><br><span class="line"><span class="comment">// @UseInterceptors(new AutoInterceptor())   //  2. 传入class实例使用拦截器(2选1)</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> BlogController &#123;</span><br><span class="line">    findAll()&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>auto.interceptor.ts  </p>
+<p>把拦截器装饰在 method上</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> BlogControll &#123;</span><br><span class="line">    <span class="meta">@UseInterceptors</span>(AutoInterceptor)</span><br><span class="line">   	findAll()&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="全局拦截器"><a href="#全局拦截器" class="headerlink" title="全局拦截器"></a>全局拦截器</h3><p>全局拦截器用于整个应用程序、每个控制器和每个路由处理程序。</p>
+<p><strong>这种方式注入不属于任何模块，因此也无法注入依赖项</strong></p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.create(ApplicationModule);</span><br><span class="line">app.useGlobalInterceptors(<span class="keyword">new</span> LoggingInterceptor());</span><br></pre></td></tr></table></figure>
+
+<p><strong>为了解决此问题, 您可以使用以下构造直接从 根模块 设置一个拦截器:</strong></p>
+<p>app.module</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Module &#125; <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; APP_INTERCEPTOR &#125; <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AutoInterceptor &#125; <span class="keyword">from</span> <span class="string">'../interceptors/auto.interceptor'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Module</span>(&#123;</span><br><span class="line">  providers: [</span><br><span class="line">    &#123;</span><br><span class="line">      provide: APP_INTERCEPTOR,</span><br><span class="line">      useClass: AutoInterceptor,			<span class="comment">// 注册全局拦截器</span></span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2021-06-30T02:25:53.893Z" itemprop="dateUpdated">2021-06-30 10:25:53</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://ImChrisChen.Github.io">
+            <img src="/img/avatar.jpg" alt="ChrisChen">
+            ChrisChen
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NestJS/">NestJS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NodeJS/">NodeJS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Typescript/">Typescript</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+    <nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+        
+
+        
+        <div class="waves-block waves-effect next">
+            <a href="/2021/06/25/http缓存-强缓存和协商缓存/" id="post-next" class="post-nav-link">
+                <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+                <h4 class="title">http缓存 - 强缓存和协商缓存</h4>
+            </a>
+        </div>
+        
+    </nav>
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ChrisChen &copy; 2018 - 2021</span>
+            <span>
+                
+                <a href="//beian.miit.gov.cn/" target="_blank">粤ICP备18132161号-1</a><br>
+                
+<!--                Power by <a href="//hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>-->
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

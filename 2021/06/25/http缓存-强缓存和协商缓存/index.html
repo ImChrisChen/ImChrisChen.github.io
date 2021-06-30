@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>http缓存 - 强缓存和协商缓存 | Yo Man!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="http,性能优化">
+    <meta name="description" content="前言前断时间在折腾找工作，和租房子搬家，现在总算在新公司稳定下来了，现在才有了时间整理一些知识点，呼...👨‍💻 开始吧 当浏览器加载一个页面时 html 引用的外部资源也会加载，但是这些资源图片，css，js 都不经常变化，如果每次都加载这些资源势必会带来资源浪费，而且加载时间也会变长，影响用户的体验。 http 缓存技术就是为了解决这个问题（或者说所有的缓存都是为了性能的优化，增加用户体验">
+<meta name="keywords" content="http,性能优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="http缓存 - 强缓存和协商缓存">
+<meta property="og:url" content="https://ImChrisChen.Github.io/2021/06/25/http缓存-强缓存和协商缓存/index.html">
+<meta property="og:site_name" content="Yo Man!">
+<meta property="og:description" content="前言前断时间在折腾找工作，和租房子搬家，现在总算在新公司稳定下来了，现在才有了时间整理一些知识点，呼...👨‍💻 开始吧 当浏览器加载一个页面时 html 引用的外部资源也会加载，但是这些资源图片，css，js 都不经常变化，如果每次都加载这些资源势必会带来资源浪费，而且加载时间也会变长，影响用户的体验。 http 缓存技术就是为了解决这个问题（或者说所有的缓存都是为了性能的优化，增加用户体验">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-06-29T06:14:33.005Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="http缓存 - 强缓存和协商缓存">
+<meta name="twitter:description" content="前言前断时间在折腾找工作，和租房子搬家，现在总算在新公司稳定下来了，现在才有了时间整理一些知识点，呼...👨‍💻 开始吧 当浏览器加载一个页面时 html 引用的外部资源也会加载，但是这些资源图片，css，js 都不经常变化，如果每次都加载这些资源势必会带来资源浪费，而且加载时间也会变长，影响用户的体验。 http 缓存技术就是为了解决这个问题（或者说所有的缓存都是为了性能的优化，增加用户体验">
+    
+        <link rel="alternate" type="application/atom+xml" title="Yo Man!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement('script');
+            hm.src = 'https://hm.baidu.com/hm.js?42406b5925a2b21ae04d47ea125d86ee';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">ChrisChen</h5>
+          <a href="mailto:309129685@qq.com" title="309129685@qq.com" class="mail">309129685@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags/">
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ImChrisChen" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">http缓存 - 强缓存和协商缓存</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">http缓存 - 强缓存和协商缓存 😄 </h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-06-25T12:07:50.000Z" itemprop="datePublished" class="page-time">
+  2021-06-25
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/计算机网络/">计算机网络</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#http缓存的作用"><span class="post-toc-number">2.</span> <span class="post-toc-text">http缓存的作用</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#强缓存策略-私有缓存"><span class="post-toc-number">3.</span> <span class="post-toc-text">强缓存策略(私有缓存)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Expires-http1-0"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Expires (http1.0)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cache-Control-http1-1"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Cache-Control (http1.1)</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#协商缓存"><span class="post-toc-number">4.</span> <span class="post-toc-text">协商缓存</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Last-Modified-If-Modify-Slice-http1-0"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">Last-Modified / If-Modify-Slice (http1.0)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Etag-If-None-Match-http-1-1"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">Etag / If-None-Match (http 1.1)</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#结尾总结"><span class="post-toc-number">5.</span> <span class="post-toc-text">结尾总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-http缓存-强缓存和协商缓存" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">http缓存 - 强缓存和协商缓存</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-06-25 20:07:50" datetime="2021-06-25T12:07:50.000Z" itemprop="datePublished">2021-06-25</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/计算机网络/">计算机网络</a></li></ul>
+
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><code>前断时间在折腾找工作，和租房子搬家，现在总算在新公司稳定下来了，现在才有了时间整理一些知识点，呼...👨‍💻 开始吧</code></p>
+<p>当浏览器加载一个页面时 html 引用的外部资源也会加载，但是这些资源图片，css，js 都不经常变化，如果每次都加载这些资源势必会带来资源浪费，而且加载时间也会变长，影响用户的体验。</p>
+<p>http 缓存技术就是为了解决这个问题（或者说所有的缓存都是为了性能的优化，增加用户体验），简单点说就是将加载过的静态文件缓存在客户端本地，下次请求相同的资源时可以直接加载本地的使用。</p>
+<p>不过http也有相应的规则和策略，去控制文件何时使用缓存何时不实用缓存，且要保证一旦资源更新缓存也要随之更新</p>
+<h2 id="http缓存的作用"><a href="#http缓存的作用" class="headerlink" title="http缓存的作用"></a>http缓存的作用</h2><ul>
+<li>降低消耗不必要的带宽</li>
+<li>提升用户访问的速度</li>
+<li>减轻服务器压力</li>
+</ul>
+<p>http 缓存分两种，一种是强缓存又称(私有缓存)，一种是协商缓存又称(共享缓存)</p>
+<h2 id="强缓存策略-私有缓存"><a href="#强缓存策略-私有缓存" class="headerlink" title="强缓存策略(私有缓存)"></a>强缓存策略(私有缓存)</h2><p>优先级：Cache-Control &gt; Expires &gt;</p>
+<p>直接读取本地缓存的内容，不去请求服务器，返回的状态码是 200。</p>
+<p>这里面有一个问题如果不去服务器请求 那如果静态资源更新了浏览器还在使用旧的资源怎么办呢？ 答案是在 <code>http 响应头（response headers）</code> 中的设置缓存过期时间。</p>
+<p>缓存过期时间又分两种，一种是固定时间，一种是相对时间</p>
+<ul>
+<li>Expires 是固定时间</li>
+<li>Cache-Control max-age 是设置相对时间</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">Expires: Wed, 21 Oct 2015 07:28:00 GMT</span><br><span class="line"></span><br><span class="line">Cache-Control: max-age=60</span><br></pre></td></tr></table></figure>
+
+<h3 id="Expires-http1-0"><a href="#Expires-http1-0" class="headerlink" title="Expires (http1.0)"></a>Expires (http1.0)</h3><p><code>Expires</code> 是 <code>http1.0</code>中定义的缓存字段，当我们请求一个资源，服务器返回时，可以在 response headers 中增加 Expires 字段表示过期时间</p>
+<blockquote>
+<p>注意：Expires 是一个固定的时间值，比如在人类文明历史上的某一刻过期，则会出现进行过期时间对比时，如果客户端时间错乱了，则这个缓存的逻辑也变得错误，比较依赖客户端的时间准确性。</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">Expires: Wed, 21 Oct 2015 07:28:00 GMT</span><br></pre></td></tr></table></figure>
+
+<h3 id="Cache-Control-http1-1"><a href="#Cache-Control-http1-1" class="headerlink" title="Cache-Control (http1.1)"></a>Cache-Control (http1.1)</h3><p>Cache-Control：当值设为max-age=300时，则代表在这个请求正确返回时间（浏览器也会记录下来）的5分钟内再次加载资源，就会命中强缓存。</p>
+<p>Cache-Control 其他的常用选项</p>
+<ul>
+<li>max-age：用来设置资源（representations）可以被缓存多长时间，单位为秒；</li>
+<li>s-maxage：和max-age是一样的，不过它只针对代理服务器缓存而言；</li>
+<li>public：指示响应可被任何缓存区缓存；</li>
+<li>private：只能针对个人用户，而不能被代理服务器缓存；</li>
+<li>no-cache：强制客户端直接向服务器发送请求,也就是说每次请求都必须向服务器发送。服务器接收到 请求，然后判断资源是否变更，是则返回新内容，否则返回304，未变更。这个很容易让人产生误解，使人误<br>以为是响应不被缓存。实际上Cache-Control:     no-cache是会被缓存的，只不过每次在向客户端（浏览器）提供响应数据时，缓存都要向服务器评估缓存响应的有效性。</li>
+<li>no-store：禁止一切缓存（这个才是响应不被缓存的意思）。</li>
+</ul>
+<blockquote>
+<p>Cache-Control 是 http是1.1新增的头字段, expires是http1.0的头字段，如何两个同时存在，cache-control 会覆盖 expires</p>
+</blockquote>
+<h2 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h2><p>协商缓存分别有两组字段进行控制,并且相互对应,他们分别是 Last-Modified / If-Modified-Since , Etag / If-None-Match</p>
+<hr>
+<h3 id="Last-Modified-If-Modify-Slice-http1-0"><a href="#Last-Modified-If-Modify-Slice-http1-0" class="headerlink" title="Last-Modified / If-Modify-Slice (http1.0)"></a>Last-Modified / If-Modify-Slice (http1.0)</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">last-modified: Wed, 09 Jun 2021 17:36:57 GMT</span><br><span class="line"></span><br><span class="line">if-modified-since: Wed, 23 Jun 2021 01:58:39 GMT</span><br></pre></td></tr></table></figure>
+
+<p>响应头 response headers 设置了 Etag 的资源, 再次请求的请求头 request headers 则会带上 If-None-Match 这个字段</p>
+<hr>
+<ul>
+<li><p>Last-Modified</p>
+<p>浏览器向服务器发送资源最后的修改时间</p>
+</li>
+</ul>
+<ul>
+<li><p>If-Modify-Slice</p>
+<p>当资源过期时（浏览器判断Cache-Control标识的max-age过期），发现响应头具有Last-Modified声明，则再次向服务器请求时带上头if-modified-since，表示请求时间。服务器收到请求后发现有if-modified-since则与被请求资源的最后修改时间进行对比（Last-Modified）,若最后修改时间较新（大），说明资源又被改过，则返回最新资源，HTTP<br>200 OK;若最后修改时间较旧（小），说明资源无新修改，响应HTTP 304 走缓存。</p>
+</li>
+</ul>
+<h3 id="Etag-If-None-Match-http-1-1"><a href="#Etag-If-None-Match-http-1-1" class="headerlink" title="Etag / If-None-Match (http 1.1)"></a>Etag / If-None-Match (http 1.1)</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">etag: W/"141768e3674c4e846c3962bef5f3e919"</span><br><span class="line"></span><br><span class="line">if-none-match: W/"141768e3674c4e846c3962bef5f3e919"</span><br></pre></td></tr></table></figure>
+
+<p>响应头 response headers 设置了 Last-Modified 的资源, 再次请求的请求头 request headers 则会带上 If-Modified-Since 这个字段 (可以随便打开一个网站进行验证)</p>
+<hr>
+<ul>
+<li><p>Etag</p>
+<p>Etag是属于HTTP 1.1属性，它是由服务器生成返回给前端，用来帮助服务器控制Web端的缓存验证。 ETag的值，是对文件的索引节（INode），大小（Size）和最后修改时间（MTime）进行Hash后得到的。</p>
+</li>
+<li><p>If-None-Match</p>
+<p>当资源过期时，浏览器发现响应头里有Etag,则再次像服务器请求时带上请求头if-none-match(值是Etag的值)。服务器收到请求进行比对，决定返回200或304</p>
+</li>
+</ul>
+<h2 id="结尾总结"><a href="#结尾总结" class="headerlink" title="结尾总结"></a>结尾总结</h2><p>Cache-Control &gt; Expires &gt; Etag &gt; Last-Modified</p>
+<ul>
+<li><p>Cache-Control 和 Expires 控制强缓存 (由浏览器进行验证,命中后http状态码为200,不请求,1)</p>
+</li>
+<li><p>Etag 和 Last-Modified 控制协商缓存 (由服务器进行验证,命中后http状态码为 304, 会发起请求)</p>
+</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2021-06-29T06:14:33.005Z" itemprop="dateUpdated">2021-06-29 14:14:33</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://ImChrisChen.Github.io">
+            <img src="/img/avatar.jpg" alt="ChrisChen">
+            ChrisChen
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/http/">http</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能优化/">性能优化</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+    <nav class="post-nav flex-row flex-justify-between">
+        
+        <div class="waves-block waves-effect prev">
+            <a href="/2021/06/27/NestJS-核心特性及概念梳理/" id="post-prev" class="post-nav-link">
+                <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+                <h4 class="title">NestJS 核心特性及概念梳理 「持续补充」</h4>
+            </a>
+        </div>
+        
+
+        
+        <div class="waves-block waves-effect next">
+            <a href="/2021/06/25/配置vim下nginx语法高亮/" id="post-next" class="post-nav-link">
+                <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+                <h4 class="title">配置vim下nginx语法高亮</h4>
+            </a>
+        </div>
+        
+    </nav>
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>ChrisChen &copy; 2018 - 2021</span>
+            <span>
+                
+                <a href="//beian.miit.gov.cn/" target="_blank">粤ICP备18132161号-1</a><br>
+                
+<!--                Power by <a href="//hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>-->
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
